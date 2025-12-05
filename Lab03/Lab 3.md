@@ -1,3 +1,34 @@
+# Lab 3: Migrating ZAVA’s Oracle ERP Database to Azure Database for PostgreSQL – Flexible Server (Heterogeneous Migration) 
+
+## Scenario 
+ZAVA DIY, a leading home improvement and retail chain, has recently expanded its e-commerce operations, managing nationwide online orders, customer accounts, and warehouse inventory. The ZAVA E-Commerce Division relies on a legacy Oracle ERP system hosted on-premises to track orders, stock movements, and generate reports. With growing transaction volumes and seasonal spikes, the on-premises system has become a bottleneck, causing delayed order processing and inconsistent inventory data. 
+
+To address these challenges, ZAVA’s executive team launched a cloud modernization initiative aimed at centralizing the ERP database, enabling real-time insights, and improving scalability. Carlos Vega, CTO, identified the Order Management Module of the Oracle ERP as the ideal candidate for a pilot migration. This module handles transactional data for online orders, inventory updates, and customer interactions, representing the complexity of the larger ERP system. 
+
+ZAVA’s target platform is Azure Database for PostgreSQL – Flexible Server, chosen for its high availability, scalable performance, and AI capabilities through pgvector and Azure AI extensions. These features will eventually support predictive stock replenishment, intelligent order routing, and customer personalization. 
+
+Carlos Vega assigned Marcus Dwyer, the Cloud Migration Specialist, to lead the migration using Ora2Pg, a tool designed for heterogeneous migrations from Oracle to PostgreSQL. Marcus’s responsibilities include: 
+
+- Assessing the existing Oracle database and workloads. 
+
+- Configuring Ora2Pg to analyze schemas, convert data types, and generate PostgreSQL-compatible SQL scripts. 
+
+- Migrating the Order Management Module to Azure Database for PostgreSQL – Flexible Server. 
+
+- Validating data integrity, ensuring referential constraints are preserved, and testing end-to-end workflows. 
+
+**Your role in this lab:** 
+
+- Step into the role of Marcus Dwyer (Cloud Migration Specialist) to migrate ZAVA DIY’s on-premises Oracle ERP Order Management Module to Azure Database for PostgreSQL Flexible Server using Ora2Pg. You will: 
+
+- Configure Ora2Pg for schema extraction and conversion. 
+
+- Generate and review PostgreSQL-compatible SQL scripts. 
+
+- Load data into Azure Database for PostgreSQL – Flexible Server. 
+
+- Validate data consistency, run sample queries, and ensure that critical e-commerce workflows continue to function seamlessly in the cloud.
+  
 ## Task 1: Provision PostgreSQL Flexible Server
 
 1.  Open a web browser and sign in to the Azure
