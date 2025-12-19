@@ -180,8 +180,6 @@ necessary extensions, and create a database.
 9.  Wait for the deployment to be completed. It will take 5-10 mins to
     complete. 
 
-    You have provisioned your PostgreSQL Flexible Server successfully.
-
     ![](./media/image12.png)
 
 ### Task 2: Create a database
