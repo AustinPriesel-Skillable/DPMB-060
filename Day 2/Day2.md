@@ -708,7 +708,7 @@ During the conversion, you will experience the following steps:
     incorrect.](./media/image68.png)
 
 2.  In the Azure Portal search bar, type +++**PostgreSQL Flexible
-    Server+++**, then select **Azure Database for PostgreSQL flexible
+    Server**+++, then select **Azure Database for PostgreSQL flexible
     servers**.
 
     ![](./media/image69.png)
@@ -770,7 +770,7 @@ During the conversion, you will experience the following steps:
 
     ![](./media/image75.png)
 
-8.  WaiWait **5–10 minutes** for the deployment to complete.
+8.  Wait **5–10 minutes** for the deployment to complete.
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image76.png)
@@ -786,8 +786,8 @@ During the conversion, you will experience the following steps:
 
 11. In the left navigation pane, go to **Settings → Server
     parameters**.  
-    In the search bar, type +++**azure.extension+++**.From the dropdown
-    menu, enable the **BTREE_GIN** and **PG_TRGM** extensions.Click
+    In the search bar, type +++**azure.extension+++**. From the dropdown
+    menu, enable the **BTREE_GIN** and **PG_TRGM** extensions. Click
     **Save**.
 
     ![](./media/image79.png)
@@ -996,30 +996,30 @@ During the conversion, you will experience the following steps:
 
 16. Set the permission for .ssh file.
 
-    +++**icacls "$HOME\.ssh\oracleVirtual_key.pem"/inheritance:r**+++
+    +++**icacls "$HOME\\.ssh\oracleVirtual_key.pem"/inheritance:r**+++
 
-    +++icacls $HOME\.ssh\oracleVirtual_key.pem /grant "\<CURRENT
+    +++icacls $HOME\\.ssh\oracleVirtual_key.pem /grant "\<CURRENT
     USER\>:R"+++
 
     **Note:** Get the current user value from the previous step.
 
     For example:
 
-    +++icacls "$HOME\.ssh\oracleVirtual_key.pem" /inheritance:r+++
+    +++icacls "$HOME\\.ssh\oracleVirtual_key.pem" /inheritance:r+++
 
-    +++icacls $HOME\.ssh\oracleVirtual_key.pem /grant
+    +++icacls $HOME\\.ssh\oracleVirtual_key.pem /grant
     "sea-dev\student:R"+++
 
     ![](./media/image113.png)
 
 17. Run the following command to connect to your VM:
 
-    +++ssh -i "$HOME\.ssh\oracleVirtual_key.pem"
+    +++ssh -i "$HOME\\.ssh\oracleVirtual_key.pem"
     azureuser@\<VM_PUBLIC_IP\>+++
 
     For Example:
 
-    +++ssh -i "$HOME\.ssh\oracleVirtual_key.pem" azureuser@20.83.43.16+++
+    +++ssh -i "$HOME\\.ssh\oracleVirtual_key.pem" azureuser@20.83.43.16+++
 
     When prompted with *“Are you sure you want to continue connecting
     (yes/no)?”*, type +++**yes**+++
@@ -1051,7 +1051,7 @@ During the conversion, you will experience the following steps:
 
     For Example:
 
-    +++ scp -i "$HOME\.ssh\oracleVirtual_key.pem"
+    +++ scp -i "$HOME\\.ssh\oracleVirtual_key.pem"
     "$HOME\Downloads\oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm"
     azureuser@20.83.43.16:~/+++
 
@@ -1061,7 +1061,7 @@ During the conversion, you will experience the following steps:
 
 3.  Connect to the VM using the following command
 
-    +++ssh -i "$HOME\.ssh\oracleVirtual_key.pem"<azureuser@20.83.43.16>+++
+    +++ssh -i "$HOME\\.ssh\oracleVirtual_key.pem"<azureuser@20.83.43.16>+++
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image118.png)
