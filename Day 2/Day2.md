@@ -952,7 +952,7 @@ During the conversion, you will experience the following steps:
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image106.png)
 
-10. For **SSH Setup,**Open **PowerShell** as Administrator.Check if the
+10. For **SSH Setup**, Open **PowerShell** as Administrator.Check if the
     .ssh folder exists:
 
     ![](./media/image107.png)
@@ -960,7 +960,7 @@ During the conversion, you will experience the following steps:
 11. Run the following command to check if the .ssh folder exists in your
     system. If you receive an error, the folder does not exist
 
-    +++**dir $HOME\\ssh**+++
+    +++**dir $HOME\.ssh**+++
 
     ![A computer screen shot of a blue screen AI-generated content may be
     incorrect.](./media/image108.png)
@@ -968,7 +968,7 @@ During the conversion, you will experience the following steps:
 12. Run the following command to create the .ssh folder in the home
     directory.
 
-    +++mkdir $HOME\\ssh+++
+    +++mkdir $HOME\.ssh+++
 
     **Note**: The directory path where the folder is created.  
     (*This may differ depending on the VM/user.*)
@@ -982,13 +982,13 @@ During the conversion, you will experience the following steps:
 14. Paste the .pem file into the .ssh directory.  
     Example path:
 
-    **C:\Users\Student\\ssh\oraclelinux-key.pem**
+    **C:\Users\Student\.ssh\oraclelinux-key.pem**
 
     ![](./media/image111.png)
 
 15. Return to PowerShell and check the current user:
 
-    +++ **whoami**+++
+    +++**whoami**+++
 
     Save the output of this command in notepad for future use.
 
@@ -996,30 +996,30 @@ During the conversion, you will experience the following steps:
 
 16. Set the permission for .ssh file.
 
-    +++**icacls "$HOME\\ssh\oracleVirtual_key.pem" /inheritance:r**+++
+    +++**icacls "$HOME\.ssh\oracleVirtual_key.pem"/inheritance:r**+++
 
-    +++icacls $HOME\\ssh\oracleVirtual_key.pem /grant "\<CURRENT
+    +++icacls $HOME\.ssh\oracleVirtual_key.pem /grant "\<CURRENT
     USER\>:R"+++
 
     **Note:** Get the current user value from the previous step.
 
     For example:
 
-    +++icacls "$HOME\\ssh\oracleVirtual_key.pem" /inheritance:r+++
+    +++icacls "$HOME\.ssh\oracleVirtual_key.pem" /inheritance:r+++
 
-    +++ icacls $HOME\\ssh\oracleVirtual_key.pem /grant
+    +++icacls $HOME\.ssh\oracleVirtual_key.pem /grant
     "sea-dev\student:R"+++
 
     ![](./media/image113.png)
 
 17. Run the following command to connect to your VM:
 
-    +++ssh -i "$HOME\\ssh\oracleVirtual_key.pem"
+    +++ssh -i "$HOME\.ssh\oracleVirtual_key.pem"
     azureuser@\<VM_PUBLIC_IP\>+++
 
     For Example:
 
-    +++ssh -i "$HOME\\ssh\oracleVirtual_key.pem" azureuser@20.83.43.16+++
+    +++ssh -i "$HOME\.ssh\oracleVirtual_key.pem" azureuser@20.83.43.16+++
 
     When prompted with *“Are you sure you want to continue connecting
     (yes/no)?”*, type +++**yes**+++
@@ -1045,13 +1045,13 @@ During the conversion, you will experience the following steps:
 2.  Navigate to the PowerShell and upload this .rmp file to the VM using
     the following command:
 
-    +++ scp -i "$HOME\\ssh\oracleVirtual_key.pem"
+    +++ scp -i "$HOME\.ssh\oracleVirtual_key.pem"
     "$HOME\Downloads\oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm"
     azureuser@\<Your-VM-IP\>:~/+++
 
     For Example:
 
-    +++ scp -i "$HOME\\ssh\oracleVirtual_key.pem"
+    +++ scp -i "$HOME\.ssh\oracleVirtual_key.pem"
     "$HOME\Downloads\oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm"
     azureuser@20.83.43.16:~/+++
 
@@ -1061,7 +1061,7 @@ During the conversion, you will experience the following steps:
 
 3.  Connect to the VM using the following command
 
-    +++ssh -i "$HOME\\ssh\oracleVirtual_key.pem"<azureuser@20.83.43.16>+++
+    +++ssh -i "$HOME\.ssh\oracleVirtual_key.pem"<azureuser@20.83.43.16>+++
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image118.png)
@@ -1120,7 +1120,7 @@ During the conversion, you will experience the following steps:
 
     +++echo 'export ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE' >>~/.bashrc+++
 
-    +++ echo 'export ORACLE_SID=XE' >> ~/.bashrc+++
+    +++echo 'export ORACLE_SID=XE' >> ~/.bashrc+++
 
     +++echo 'export PATH=$ORACLE_HOME/bin:$PATH' >> ~/.bashrc+++
 
