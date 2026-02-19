@@ -1045,7 +1045,7 @@ During the conversion, you will experience the following steps:
 2.  Navigate to the PowerShell and upload this .rmp file to the VM using
     the following command:
 
-    +++ scp -i "$HOME\.ssh\oracleVirtual_key.pem"
+    +++ scp -i "$HOME\\.ssh\oracleVirtual_key.pem"
     "$HOME\Downloads\oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm"
     azureuser@\<Your-VM-IP\>:~/+++
 
