@@ -1,5 +1,5 @@
 
-# Lab 01 -Deploying and Optimizing ZAVA Retail App using Azure Database for PostgreSQL - Flexible Server
+# Lab 01 - Deploying and Optimizing ZAVA Retail App using Azure Database for PostgreSQL - Flexible Server
 
 ## Scenario
 
