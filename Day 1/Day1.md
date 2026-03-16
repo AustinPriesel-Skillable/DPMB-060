@@ -202,12 +202,12 @@ scripts.
 
     ![](https://raw.githubusercontent.com/technofocus-pte/mgrtdtbstoazdtbspsqldepth/refs/heads/main/Day%201/media/image18.png)
 
-3.  In the search bar, search for **+++azure.extensions+++** parameter.
+3.  In the search bar, search for +++azure.extensions+++ parameter.
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](https://raw.githubusercontent.com/technofocus-pte/mgrtdtbstoazdtbspsqldepth/refs/heads/main/Day%201/media/image19.png)
 
-4.  Search for the +++**VECTOR**+++ parameter and then select the **VECTOR** parameter. This will allow the pgvector extension.
+4.  Search for the +++VECTOR+++ parameter and then select the **VECTOR** parameter. This will allow the pgvector extension.
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](https://raw.githubusercontent.com/technofocus-pte/mgrtdtbstoazdtbspsqldepth/refs/heads/main/Day%201/media/image20.png)
@@ -260,7 +260,7 @@ scripts.
 
 7.  Navigate to the cloned repository
 
-    +++cd ai-tour-26-zava-diy-dataset-plus-mcp+++
+    `cd ai-tour-26-zava-diy-dataset-plus-mcp`
 
     ![](https://raw.githubusercontent.com/technofocus-pte/mgrtdtbstoazdtbspsqldepth/refs/heads/main/Day%201/media/image30.png)
 
