@@ -1,4 +1,9 @@
-# Lab 02: End-to-End Migration of ZAVA’s On-Prem PostgreSQL to Azure Database for PostgreSQL – Flexible Server (Homogeneous Migration)
+<!-- !INSTRUCTIONS [ ](https://raw.githubusercontent.com/LODSContent/All-MOC/master/MOC/@lab.LanguageCode/tap_alert.md) -->
+
+<!-- !instructions[](https://raw.githubusercontent.com/LODSContent/All-MOC/refs/heads/master/MOC/@lab.LanguageCode/MSDepth-CS-Login.md) -->
+
+
+# Lab 02: End-to-End Migration of ZAVA's On-Prem PostgreSQL to Azure Database for PostgreSQL - Flexible Server (Homogeneous Migration)
 
 ## Scenario
 
@@ -7,12 +12,12 @@ shipping, fleet operations, warehouse inventory, and last-mile delivery.
 Traditionally, the branch relied on on-premises systems and manual
 processes to coordinate deliveries, track vehicles, and manage stock,
 which led to frequent data silos, operational inefficiencies, and
-delayed insights — especially during peak periods. To address these
-challenges, ZAVA’s leadership launched a cloud modernization initiative
+delayed insights - especially during peak periods. To address these
+challenges, ZAVA's leadership launched a cloud modernization initiative
 aimed at centralizing operations, streamlining workflows, and enabling
 real-time decision-making across the branch. Under the guidance of
 Carlos Vega, CTO, the team conducted a thorough assessment of the
-branch’s on-premises environment, identifying over 50 operational
+branch's on-premises environment, identifying over 50 operational
 systems and selecting one representative workload for a pilot migration.
 This workload, a web-based branch management system running on Red Hat
 Enterprise Linux (RHEL) servers and connected to a PostgreSQL database,
@@ -20,10 +25,10 @@ was chosen because it exemplified the common components found across
 other branch systems while remaining manageable for testing the
 migration plan.
 
-The branch migration project leverages Azure Database for PostgreSQL –
+The branch migration project leverages Azure Database for PostgreSQL -
 Flexible Server, chosen for its scalable performance, built-in security,
 high availability, and AI-readiness through pgvector and Azure AI
-extensions — capabilities that will support predictive route
+extensions - capabilities that will support predictive route
 optimization, vehicle maintenance insights, and intelligent delivery
 recommendations in the future. Carlos Vega assigned this task to Marcus
 Dwyer, the newly introduced cloud migration specialist, who is
@@ -72,7 +77,7 @@ required utilities, clone configuration scripts, and validate the
 application, ensuring the on-premises workload is operational and
 accessible.
 
-### Task 1 – Create resources
+### Task 1 - Create resources
 
 In this task, you will leverage a custom Azure Resource Manager (ARM)
 template to deploy the Azure resources and create a simulated
@@ -80,7 +85,7 @@ on-premises environment for ZAVA Express Logistics.
 
 1.  Open a browser and navigate to +++https://portal.azure.com/+++. Now,
     sign in with your account.
-
+        
     - Username - +++@lab.CloudPortalCredential(User1).Username+++
 
     - TAP Token - +++@lab.CloudPortalCredential(User1).AccessToken+++
@@ -92,11 +97,11 @@ on-premises environment for ZAVA Express Logistics.
     ![](./media/image3.png)
 
 2.  Open a new tab in the browser, and navigate to the following link to
-    get the ARM template: 
+    get the ARM template: 
 
     +++https://github.com/technofocus-pte/MigrateLinuxworkloads/tree/main/resources/deployment+++
 
-3.  Select **Deploy to Azure**. This will open a new browser tab to the
+3.  Select **Deploy to Azure**. This will open a new browser tab to the
     Azure Portal for custom deployments.
     
     ![The GitHub page with Deploy to
@@ -104,21 +109,21 @@ on-premises environment for ZAVA Express Logistics.
 
 4.  Fill in the required ARM template parameters.
 
-    - **Subscription:** Use the default one
+    - **Subscription:** @lab.CloudSubscription.Name
 
-    - **Resource group:** Select **ResourceGroup1**
+    - **Resource group:** **ResourceGroup1**
 
-    - **Region:** Select @lab.CloudResourceGroup(ResourceGroup1).Location
+    - **Region:** @lab.CloudResourceGroup(ResourceGroup1).Location
 
     - **Resource Name Base:** Enter +++ZavaWeb@lab.LabInstance.Id+++
 
     - **Password:** Enter +++pass@dmIn234+++
 
-    Select **Review + create.**
+    Select **Review + create.**
 
     ![](./media/image5.png)
 
-5.  Click on the **Create** button to start deployment.
+5.  Click on the **Create** button to start deployment.
 
     ![](./media/image6.png)
 
@@ -127,7 +132,7 @@ on-premises environment for ZAVA Express Logistics.
 
     ![](./media/image7.png)
 
-    **Note**: While automation can make things simpler and repeatable,
+    >[!Note] While automation can make things simpler and repeatable,
     sometimes it can fail. If at any time during the ARM template deployment
     there is a failure, review the failure, delete the Resource Group, and
     try the ARM template again. Or review the failures and adjust for errors
@@ -145,8 +150,8 @@ In this task, you will configure the web application hosted on the
 simulated on-premises APP virtual machine that was provisioned by the
 ARM Template deployment.
 
-1.  Select the **On-premises Workload VM** named similar
-    to **ZavaWeb-onprem-workload-vm** present on page 2.
+1.  Select the **On-premises Workload VM** named similar
+    to **ZavaWeb-onprem-workload-vm** present on page 2.
 
     ![](./media/image9.png)
 
@@ -156,12 +161,12 @@ ARM Template deployment.
 
     ![](./media/image10.png)
 
-    **Note:** You will need this IP address to configure the web application
+    >[!Note]You will need this IP address to configure the web application
     to use the database workload server.
 
-3.  Navigate back to the **ResourceGroup1**, then select
-    the **On-premises APP VM** named similar
-    to **ZavaWeb-onprem-app-vm**.
+3.  Navigate back to the **ResourceGroup1**, then select
+    the **On-premises APP VM** named similar
+    to **ZavaWeb-onprem-app-vm**.
 
     ![](./media/image11.png)
 
@@ -172,76 +177,74 @@ ARM Template deployment.
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image12.png)
 
-5.  Within the **Bastion** page, enter the following details:
+5.  Within the **Bastion** page, enter the following details:
 
-    - **Authentication Type:** VM Password
+    - **Authentication Type:** VM Password
 
-    - **Username:** Enter +++demouser+++
+    - **Username:** Enter +++demouser+++
 
-    - **VM Password:** Enter +++pass@dmIn234+++
+    - **VM Password:** Enter +++pass@dmIn234+++
 
     Then click on the **Connect** button to connect with Bastion.
 
     ![](./media/image13.png)
 
-    **Note**: You may need to **allow pop-ups** if they are blocked in your browser.
+    >[!Note] You may need to **allow pop-ups** if they are blocked in your browser.
 
 6.  When connected to the VM via the Bastion host, you will get a screen
     like this:
 
-    **Note**: If you see a pop-up stating “See test and images copied to the
-    clipboard”. Click **Allow**.
+    >[!Note] If you see a pop-up stating "See test and images copied to the
+    clipboard". Click **Allow**.
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image14.png)
 
 7.  Once connected via Bastion, run the following command to install the
     git utility on the server by using the clipboard within the
-    session:   
+    session:   
 
     ![A screen shot of a computer AI-generated content may be
-    incorrect.](./media/image15.png) 
+    incorrect.](./media/image15.png) 
 
-8.  Click the arrows, which will expand the window
+8.  Click the arrows, which will expand the window
 
     ![Clipboard within the Bastion session.](./media/image16.png)
 
-9.  Copy the command below and paste it into the clipboard. 
+9.  Copy the command below and paste it into the clipboard. 
 
-    +++sudo yum install git  -y+++
+    +++sudo yum install git  -y+++
 
-    ![Clipboard within the Bastion session.](./media/image17.png) 
+    ![Clipboard within the Bastion session.](./media/image17.png) 
 
-10. Now, right-click on the window, which will paste the command and run
-    it. 
+10. Now, right-click on the window, which will paste the command and run
+    it. 
 
     ![](./media/image18.png)  
 
-    **Note:** Similarly, you can run all these commands in the Bastion.
+    >[!Note] Similarly, you can run all these commands in the Bastion.
 
 11. Enter the following command to clone the remote git repository
     holding a script which will configure the web app on the application
     server.
 
-    +++sudo git clone
-    https://github.com/technofocus-pte/TechExcel-Migrate-Linux-workloads.git+++
+    +++sudo git clone https://github.com/technofocus-pte/TechExcel-Migrate-Linux-workloads.git+++
 
     ![](./media/image19.png)
 
 12. You can now run the configuration script by using the following
     command:
 
-    +++sudo bash
-    TechExcel-Migrate-Linux-workloads/resources/deployment/onprem/APP-workload-install.sh+++
+    +++sudo bash TechExcel-Migrate-Linux-workloads/resources/deployment/onprem/APP-workload-install.sh+++
 
-    You will get a status message of  “The script was successful”.
+    You will get a status message of  "The script was successful".
 
     ![](./media/image20.png)
 
-13. Execute the following command to open the **orders.php** file for
+13. Execute the following command to open the **orders.php** file for
     the web application in a text editor. The application needs to be
-    configured to connect to the **Azure Database for PostgreSQL
-    Flexible Server** database.
+    configured to connect to the **Azure Database for PostgreSQL
+    Flexible Server** database.
 
     +++sudo nano /var/www/html/orders.php+++
 
@@ -259,7 +262,7 @@ ARM Template deployment.
     ![](./media/image22.png)
 
 16. If the host IP is not the same, then replace it with the **Private
-    IP Address** of the **ZavaWeb-onprem-workload-vm** instance that was
+    IP Address** of the **ZavaWeb-onprem-workload-vm** instance that was
     copied in step 2. Then press **Ctrl+X -\> +++y+++-\>Enter** to save
     the changes.
 
@@ -277,23 +280,23 @@ In this task, you will validate the web application hosted on the
 simulated on-premises APP virtual machine that was provisioned by the
 ARM Template deployment.
 
-1.  Navigate back to **Azure Portal**, open the **ResourceGroup1**, then
-    select the **On-premises APP VM** named similar
-    to **ZavaWeb-onprem-app-vm**
+1.  Navigate back to **Azure Portal**, open the **ResourceGroup1**, then
+    select the **On-premises APP VM** named similar
+    to **ZavaWeb-onprem-app-vm**
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image24.png)
 
-2.  In the **Overview** window, locate the VM’s **Public IP Address**
+2.  In the **Overview** window, locate the VM's **Public IP Address**
     and copy it into Notepad.
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image25.png)
 
 3.  Open a new browser window, then navigate to the
-    following **http:// URL** to access the simulated on-premises web
+    following **http:// URL** to access the simulated on-premises web
     application provisioned for this lab. Be sure to replace
-    the **\<ip-address\>** placeholder with the Public IP Address for
+    the **\<ip-address\>** placeholder with the Public IP Address for
     the VM. For example: http://172.206.126.43
 
     +++http://\<ip-address\>+++
@@ -301,7 +304,7 @@ ARM Template deployment.
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image26.png)
 
-    **Note:** You should get the Red Hat Enterprise Linux Test Page 
+    >[!Note]You should get the Red Hat Enterprise Linux Test Page 
 
 4.  When the web page loads, enter the following at the end of the URL.
     For example: "http://172.206.126.43/orders.php"
@@ -330,37 +333,37 @@ target for the database migration.
 
     ![A screenshot of a computer AI-generated content may be incorrect.](./media/image28.png)
 
-2.  In the **Marketplace** window, search for +++**PostgreSQL
-    flexible**+++, then select **Azure Database for PostgreSQL Flexible
-    Server** from the search results.
+2.  In the **Marketplace** window, search for +++**PostgreSQL
+    flexible**+++, then select **Azure Database for PostgreSQL Flexible
+    Server** from the search results.
 
     ![A screenshot of a computer AI-generated content may be incorrect.](./media/image29.png)
 
-3.  Click **Create** and then select **Azure Database for PostgreSQL
-    Flexible Server.**
+3.  Click **Create** and then select +++Azure Database for PostgreSQL
+    Flexible Server+++.
 
     ![A screenshot of a computer AI-generated content may be incorrect.](./media/image30.png)
 
-4.  On the **New Azure Database for PostgreSQL** **Flexible
-    Server** pane, select the following values:
+4.  On the **New Azure Database for PostgreSQL** **Flexible
+    Server** pane, select the following values:
 
-    1.  **Subscription:** Keep default
+    1.  **Subscription:** @lab.CloudSubscription.Name
 
-    2.  **Resource group:** Select **ResourceGroup1**
+    2.  **Resource group:** **ResourceGroup1**
 
-    3.  **Server name:** Enter +++**zavaweb-db@lab.LabInstance.Id**+++
+    3.  **Server name:** +++**zavaweb-db@lab.LabInstance.Id**+++
 
-    4.  **Region:** Select
-        @lab.CloudResourceGroup(ResourceGroup1).Location 
+    4.  **Region:** 
+        @lab.CloudResourceGroup(ResourceGroup1).Location 
 
     5.  **PostgreSQL version:** Keep the default, as it always selects
         the latest version
 
-    6.  **Workload type:** Select **Dev/Test**
+    6.  **Workload type:** **Dev/Test**
 
     ![](./media/image31.png)
 
-5.  Under **Compute + storage,** click **Configure server**.
+5.  Under **Compute + storage,** click **Configure server**.
 
 6.  On the Compute + storage window, under the **compute** section,
     choose the following:
@@ -373,21 +376,21 @@ target for the database migration.
 
     ![](./media/image32.png)
 
-7.  Under the **High availability** section, choose **Disabled (99.9%
-    SLA)** and then click **Save.**
+7.  Under the **High availability** section, choose **Disabled (99.9%
+    SLA)** and then click **Save.**
 
     ![](./media/image33.png)
 
 8.  On the **New Azure Database for PostgreSQL** **Flexible Server**
-    window, under the **Authentication** section, enter the following
+    window, under the **Authentication** section, enter the following
     details:
 
     1.  **Authentication method**: Choose **PostgreSQL authentication
         only**
 
-    2.  **Admin username**: Enter +++pgadmin+++
+    2.  **Admin username**: +++pgadmin+++
 
-    3.   **Password**: Enter +++passaDmin342+++
+    3.   **Password**: +++passaDmin342+++
 
     Select **Next: Networking**
 
@@ -411,12 +414,12 @@ target for the database migration.
     2.  **Resource group:** ResourceGroup1
 
     3.  **Location**: Select
-        @lab.CloudResourceGroup(ResourceGroup1).Location 
+        @lab.CloudResourceGroup(ResourceGroup1).Location 
 
     4.  **Name:** Enter +++post-priv-endpoint+++
 
     5.  **Virtual network:** Select
-        **ZavaWeb.Id-spoke-vnet(ResourceGroup1)**
+        +++ZavaWeb@lab.LabInstance.Id-spoke-vnet(ResourceGroup1)+++
 
     6.  **Subnet**: Select **default**(10.2.0.0/24)
 
@@ -427,15 +430,15 @@ target for the database migration.
 
     ![](./media/image37.png)
 
-12. Select **Review + create**.
+12. Select **Review + create**.
 
     ![](./media/image38.png)
 
-13. Select **Create** to provision the service.
+13. Select **Create** to provision the service.
 
     ![](./media/image39.png)
 
-14. Click **Create server without firewall rules** - as you will use the
+14. Click **Create server without firewall rules** - as you will use the
     private endpoint for access.
 
     ![](./media/image40.png)
@@ -448,7 +451,7 @@ target for the database migration.
     ![](./media/image42.png)
 
 16. In the Overview tab of the **Azure Database for PostgreSQL flexible
-    server,**  copy and save the **Server name** in Notepad for use
+    server,**  copy and save the **Server name** in Notepad for use
     later.
 
     ![](./media/image43.png)
@@ -460,22 +463,22 @@ Source and Target connections. You will then execute and monitor a
 migration of your on-premises PostgreSQL database into Azure Database
 for PostgreSQL - flexible server.
 
-1.  Select **Migration** from the menu on the left of the flexible
+1.  Select **Migration** from the menu on the left of the flexible
     server blade.
 
     ![](./media/image44.png)
 
-2.  Click on the **+ Create**.
+2.  Click on the **+ Create**.
 
     ![](./media/image45.png)
 
-    **Note**: If the **+ Create** option is unavailable,
-    select **Compute + storage** and change the compute tier to
-    either **General Purpose** or **Memory Optimized** and try to create
+    >[!Note] If the **+ Create** option is unavailable,
+    select **Compute + storage** and change the compute tier to
+    either **General Purpose** or **Memory Optimized** and try to create
     the Migration process again. After the Migration is successful, you
-    can change the compute tier back to **Burstable**.
+    can change the compute tier back to **Burstable**.
 
-3.  On the **Setup** tab, enter each field as follows:
+3.  On the **Setup** tab, enter each field as follows:
 
     1.  **Migration name:** +++Migration-Zava-northwind+++
 
@@ -485,71 +488,71 @@ for PostgreSQL - flexible server.
 
     4.  **Migration option:** Offline
 
-    5.  Select **Next: Runtime server \>**
+    5.  Select **Next: Runtime server \>**
 
     ![](./media/image46.png)
 
-    **Note:** The Runtime server \> button might be enabled after 20-30 mins.
+    >[!Note]The Runtime server \> button might be enabled after 20-30 mins.
 
-4.  We will **not** use a Runtime Server, so just select **Next: Source
+4.  We will **not** use a Runtime Server, so just select **Next: Source
     server \>**.
 
     ![](./media/image47.png)
 
-5.  On the **Source server** tab, enter each field as follows:
+5.  On the **Source server** tab, enter each field as follows:
 
     1.  **Server name:** The public IP address of the
-        “ZavaWeb-onprem-workload-vm”.
+        "ZavaWeb-onprem-workload-vm".
 
     2.  **Port:** 5432
 
-    3.  **Server admin login name:** rootuser(the VM has been setup with
-        an admin user called rootuser)
+    3.  **Server admin login name:** +++rootuser+++(the VM has been setup with
+        an admin user called rootuser)
 
     4.  **Password:** Enter+++123rootpass456+++
 
     5.  **SSL mode:** Prefer.
 
-    6.  Click on the **Connect to source** option to validate the
+    6.  Click on the **Connect to source** option to validate the
         connectivity details provided.
 
-    7.  Click on the **Next: Target server\>** button to progress.
+    7.  Click on the **Next: Target server\>** button to progress.
 
     ![](./media/image48.png)
 
 6.  The connectivity details should be automatically completed for the
     target server we are migrating to.
 
-    1.  In the password field -  Enter +++passaDmin342+++
+    1.  In the password field -  Enter +++passaDmin342+++
 
-    2.  Click on the **Connect to target** option to validate the
+    2.  Click on the **Connect to target** option to validate the
         connectivity details provided.
 
-    3.  Click on the **Next: Databases to validate or migrate\>** button to progress.
+    3.  Click on the **Next: Databases to validate or migrate\>** button to progress.
 
     ![](./media/image49.png)
 
-7.  On the **Databases to validate or migrate** tab, select the
+7.  On the **Databases to validate or migrate** tab, select the
     **northwind** database because you want to migrate to the flexible
-    server. Then click on the **Next : Summary \>** button to progress
+    server. Then click on the **Next : Summary \>** button to progress
     and review the data provided.
 
     ![](./media/image50.png)
 
-8.  On the **Summary** tab, review the information and then click
-    the **Start Validation and Migration** button to start the migration
+8.  On the **Summary** tab, review the information and then click
+    the **Start Validation and Migration** button to start the migration
     to the flexible server.
 
     ![](./media/image51.png)
 
-9.  On the **Migration** tab, you can monitor the migration progress by
-    using the **Refresh** button in the top menu to view the progress
+9.  On the **Migration** tab, you can monitor the migration progress by
+    using the **Refresh** button in the top menu to view the progress
     through the validation and migration process.
 
     ![](./media/image52.png)
 
-10. By clicking on the **Migration-northwind** activity, you can view
-    detailed information about the migration activity’s progress.
+10. By clicking on the **Migration-northwind** activity, you can view
+    detailed information about the migration activity's progress.
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image53.png)
@@ -592,13 +595,13 @@ for PostgreSQL - flexible server.
 
     ![](./media/image60.png)
 
-8.  Within the **Bastion** page, enter the following details:
+8.  Within the **Bastion** page, enter the following details:
 
-    - **Authentication Type:** VM Password
+    - **Authentication Type:** VM Password
 
-    - **Username:** Enter +++demouser+++
+    - **Username:** Enter +++demouser+++
 
-    - **VM Password:** Enter +++pass@dmIn234+++
+    - **VM Password:** Enter +++pass@dmIn234+++
 
     Click **Connect**.
 
@@ -610,7 +613,7 @@ for PostgreSQL - flexible server.
 
     When prompted, enter:
 
-    +++ passaDmin342+++
+    +++passaDmin342+++
 
     ![](./media/image62.png)
 
@@ -622,7 +625,7 @@ for PostgreSQL - flexible server.
 
 11. Run the following SQL queries to verify record counts in key tables:
 
-    +++ SELECT COUNT(\*) FROM orders;+++
+    +++SELECT COUNT(\*) FROM orders;+++
 
     +++SELECT COUNT(\*) FROM customers;+++
 
@@ -631,7 +634,7 @@ for PostgreSQL - flexible server.
 12. Retrieve a small sample of data from the database to verify
     accuracy:
 
-    +++ SELECT \* FROM orders LIMIT 5;++++
+    +++SELECT * FROM orders LIMIT 5;+++
 
     ![](./media/image65.png)
 
@@ -651,1069 +654,1055 @@ demonstrating a real-world cloud modernization process.
 
 ===
 
-# Lab 3: Oracle to Azure PostgreSQL Migration Using Microsoft First‑Party AI‑Assisted Migration Tool
+# Lab 3: Migrating ZAVA's Oracle ERP Database to Azure Database for PostgreSQL - Flexible Server (Heterogeneous Migration)
 
-# Objective
+## Scenario
 
-To migrate Oracle database schemas and client application code to Azure
-Database for PostgreSQL using Visual Studio Code migration tooling and
-GitHub Copilot (Claude Sonnet), ensuring PostgreSQL compatibility and
-generating validated migration artifacts.
+ZAVA DIY, a leading home improvement and retail chain, has recently
+expanded its e-commerce operations, managing nationwide online orders,
+customer accounts, and warehouse inventory. The ZAVA E-Commerce Division
+relies on a legacy Oracle ERP system hosted on-premises to track orders,
+stock movements, and generate reports. With growing transaction volumes
+and seasonal spikes, the on-premises system has become a bottleneck,
+causing delayed order processing and inconsistent inventory data.
 
-# Exercise 1 - Schema migration from Oracle to Azure PostgreSQL
+To address these challenges, ZAVA's executive team launched a cloud
+modernization initiative aimed at centralizing the ERP database,
+enabling real-time insights, and improving scalability. Carlos Vega,
+CTO, identified the **Order Management Module** of the Oracle ERP as the
+ideal candidate for a pilot migration. This module handles transactional
+data for online orders, inventory updates, and customer interactions,
+representing the complexity of the larger ERP system.
 
-This lab guides you through converting Oracle database schemas to Azure
-Database for PostgreSQL using the Visual Studio PostgreSQL extension
-with Azure OpenAI to automate and validate schema translation. It covers
-connecting to your Oracle source and Azure Database for PostgreSQL
-target, configuring Azure OpenAI, running the Migration Wizard, and
-reviewing the generated PostgreSQL artifacts.  
-Before you begin, ensure you have network access, credentials for both
-servers, and a deployed Azure OpenAI model.
+ZAVA's target platform is **Azure Database for PostgreSQL - Flexible
+Server**, chosen for its high availability, scalable performance, and AI
+capabilities through **pgvector** and **Azure AI extensions**. These
+features will eventually support predictive stock replenishment,
+intelligent order routing, and customer personalization.
 
-During the conversion, you will experience the following steps:
+Carlos Vega assigned **Marcus Dwyer**, the Cloud Migration Specialist,
+to lead the migration using **Ora2Pg**, a tool designed for
+heterogeneous migrations from Oracle to PostgreSQL. Marcus's
+responsibilities include:
 
-- **Schema Discovery:** The tool analyzes your Oracle schema objects.
+- Assessing the existing Oracle database and workloads.
 
-- **AI Processing:** Azure OpenAI processes and converts compatible
-  objects.
+- Configuring Ora2Pg to analyze schemas, convert data types, and
+  generate PostgreSQL-compatible SQL scripts.
 
-- **Validation:** Converted objects are validated in the scratch
-  database.
+- Migrating the Order Management Module to Azure Database for PostgreSQL
+  - Flexible Server.
 
-- **Review Tasks:** Objects requiring manual attention are flagged for
-  your review.
+- Validating data integrity, ensuring referential constraints are
+  preserved, and testing end-to-end workflows.
 
-- **Output Generation:** Successfully converted objects are saved as
-  PostgreSQL files.
+**Your role in this lab:**
+
+Step into the role of Marcus Dwyer (Cloud Migration Specialist) to
+migrate ZAVA DIY's on-premises Oracle ERP Order Management Module to
+**Azure Database for PostgreSQL Flexible Server** using **Ora2Pg**. You
+will:
+
+1.  Configure Ora2Pg for schema extraction and conversion.
+
+2.  Generate and review PostgreSQL-compatible SQL scripts.
+
+3.  Load data into Azure Database for PostgreSQL - Flexible Server.
+
+4.  Validate data consistency, run sample queries, and ensure that
+    critical e-commerce workflows continue to function seamlessly in the
+    cloud.
 
 ## Task 1: Provision PostgreSQL Flexible Server
 
-1.  Open a web browser and sign in to the **Azure Portal** at
-    +++**https://portal.azure.com+++** using your cloud slice
-    credentials
+In this task, you will create the target Azure Database for PostgreSQL
+Flexible Server that will host the migrated Oracle ERP data. This server
+will serve as the destination platform for schema and data migration
+using Ora2Pg.
 
-    - Username - +++@lab.CloudPortalCredential(User1).Username+++
+1.  Open a web browser and sign in to the Azure
+    portal at +++https://portal.azure.com+++ using the following cloud
+    slice credentials.
 
-    - Password - +++@lab.CloudPortalCredential(User1).Password+++
+    - Username - +++@lab.CloudPortalCredential(User1).Username+++
 
-    ![A screenshot of a login box AI-generated content may be
-    incorrect.](./media/image66.png)
+    - TAP Token - +++@lab.CloudPortalCredential(User1).AccessToken+++
 
-    ![A screenshot of a login box
-    AI-generated content may be incorrect.](./media/image67.png)
+    ![](./media/image1.png)
 
-    ![A
-    screenshot of a computer screen AI-generated content may be
-    incorrect.](./media/image68.png)
+    ![](./media/image2.png)
 
-2.  In the Azure Portal search bar, type +++**PostgreSQL Flexible
-    Server**+++, then select **Azure Database for PostgreSQL flexible
-    servers**.
+    ![](./media/image3.png)
+
+2.  In the search bar, enter +++PostgreSQL Flexible Server+++ and then
+    select **azure database for PostgreSQL flexible servers**.
+
+    ![](./media/image66.png)
+
+3.  Click **+Create**.
+
+4.  Now enter the following details:
+
+    **Resource group:** Select **ResourceGroup1**
+
+    **Server name:** Enter +++postgrenewserver+++
+
+    **Region:** Select **Central US**
+
+    **PostgreSQL Version:** 16
+
+    **Workload type:** Select **Dev/Test**
+
+5.  Under Authentication, select **PostgreSQL authentication only** and
+    then enter the following credential values:
+
+    - Username: +++pgAdmin+++
+
+    - Password: +++pAssw0rd1289+++
+
+    Select **Networking**
+
+6.  In the networking tab, please ensure that the connectivity method is
+    set to Public access and "Allow public access to this resource
+    through the internet using a public IP address" is enabled.
+
+    ![](./media/image67.png)
+
+7.  Under the Firewall section, enable **Allow public access from any
+    Azure service within Azure to this server** and click **+Add current
+    client IP address**. Then it will add a firewall rule for your
+    current IP. Click **Review + Create**.
+
+    ![](./media/image68.png)
+
+8.  Click **Create**.
 
     ![](./media/image69.png)
 
-3.  Click **+Create.**
+9.  Wait for 10-15 mins to complete the deployment.
 
-    ![](./media/image70.png)
+    ![A screenshot of a computer AI-generated content may be
+    incorrect.](./media/image70.png)
 
-4.  Now Enter the following details:
+10. Click **Go to resource**.
 
-    - **Basics**
+    ![A screenshot of a computer AI-generated content may be
+    incorrect.](./media/image71.png)
 
-      - **Resource group:** ResourceGroup1
-
-      - **Server name:** +++**postgrenewserver1234+++**
-
-      - **Region:** *Central US*
-
-      - **PostgreSQL version:** *16*
-
-      - **Workload type:** *Dev/Test*
-
-    - **Authentication**
-
-        - Select **PostgreSQL authentication only**
-
-        - **Username:** **+++pgAdmin+++**
-
-        - **Password:** **+++pAssw0rd1289+++**
-
-        - After entering the information, select **Networking**.
-
-    ![](./media/image71.png)
+11. On the left-hand navigation menu, click on **Settings-\>Server
+    parameters**.
 
     ![](./media/image72.png)
 
-5.  In In the **Networking** tab, ensure:
-
-    - **Connectivity method:** Public access
-
-    - **Allow public access to this resource through the internet using
-      a public IP address** is **enabled**.
+12. In the search bar, enter +++azure.extension+++.
 
     ![](./media/image73.png)
 
-6.  Under the **Firewall** section:
-
-    - Enable **Allow public access from any Azure service within Azure to
-    this server**.
-
-    - Click **+ Add current client IP address** to automatically create a
-    firewall rule for your IP.
-
-    - Click **Review + create**.
+13. From the drop-down menu, select **BTREE_GIN** and **PG_TRGM**
+    extensions.
 
     ![](./media/image74.png)
 
-7.  Click **Create**.
-
     ![](./media/image75.png)
 
-8.  Wait **5–10 minutes** for the deployment to complete.
+14. Click **Save**.
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image76.png)
+    ![](./media/image76.png)
 
-9.  Click **Go to resource**.
+15. After completing the deployment successfully. Click on the **Home**
+    tab.
 
     ![](./media/image77.png)
 
-10. Make a note of the **Endpoint** value—you will need this as the
-    **Host** in **Task 8**
+## Task 2: Create a virtual machine
+
+In this task, you will provision an Oracle Linux virtual machine in
+Azure to host the source Oracle database and migration tools. This VM
+represents the on-premises Oracle environment used for the migration
+exercise.
+
+1.  Navigate to the Home page of the Azure portal. Select **Virtual
+    machines** from the Azure services.
 
     ![](./media/image78.png)
 
-11. In the left navigation pane, go to **Settings → Server
-    parameters**.  
-    In the search bar, type +++**azure.extension+++**. From the dropdown
-    menu, enable the **BTREE_GIN** and **PG_TRGM** extensions. Click
-    **Save**.
+2.  Click **+Create**.
 
     ![](./media/image79.png)
 
+3.  Select **Virtual Machine**.
+
     ![](./media/image80.png)
 
-12. After completing the deployment successfully, return to the **Home**
-    tab.
+4.  In the Create a virtual machine window, enter the following details:
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image81.png)
+    - **Subscription:** @lab.CloudSubscription.Name
+
+    - **Resource group:** ResourceGroup1.
+
+    - **Virtual machine name:** +++oracleVirtual+++
+
+    - **Region:** Central US
+
+    - **Image:** +++Oracle Linux 8.10 (LVM)-x64 Gen2+++
+
+    Other than the above settings, keep the remaining as the default.
+
+    Click **Review + create**.
+
+    ![](./media/image81.png)
 
     ![](./media/image82.png)
 
-## Task 2: Create Microsoft Foundry Resource and Deploy the GPT‑4.1 Model
-
-1.  Switch back to the **Azure Portal**, search for +++**Microsoft
-    Foundry+++**, and select it
+5.  Click **Create**.
 
     ![](./media/image83.png)
 
-2.  Under **Create a Foundry Resource**, click **Create a resource**.
+6.  Click **Download private key and create a resource**.
 
     ![](./media/image84.png)
 
-3.  Enter Enter the following values, then click **Review + create**:
+7.  Your deployment has started. Wait for 5-10 mins to complete.
 
-    - **Resource Group:** Select the existing resource group
+    ![A screenshot of a computer AI-generated content may be
+    incorrect.](./media/image85.png)
 
-    - **Name:** +++**ogtopgmsfoundry+++**
-
-    - **Region:** *East US*
-
-    ![](./media/image85.png)
-
-4.  After validation completes successfully, click **Create**.
+    Your VM has been deployed successfully.
 
     ![](./media/image86.png)
 
-5.  Once deployment is complete, click **Go to resource**
+8.  Now click **Go to resource.**
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image87.png)
+    ![](./media/image87.png)
+
+9.  Locate and save the public IP of your VM in Notepad. You will use it
+    in the next steps for the connection.
 
     ![](./media/image88.png)
 
-6.  In the left navigation pane, expand **Resource Management** and
-    select **Keys and Endpoint**.Copy the **API endpoint** and **Key 1**
-    values—these will be required later in **Task 8**.
+10. Now you will set up SSH. Open **PowerShell** as administrator and
+    run the following command to check if the .ssh folder exists in your
+    system.
 
-    ![](./media/image89.png)
+    +++dir $HOME\\ssh+++
 
-7.  Click **Go to Foundry portal**.
+    If you get an error like this, that means this folder is not available.
+
+    ![A computer screen shot of a blue screen AI-generated content may be
+    incorrect.](./media/image89.png)
+
+11. Run the following command to create the .ssh folder in the home
+    directory.
+
+    +++mkdir $HOME\\ssh+++
+
+    It will provide the directory location where it creates the .ssh file.
+    So save this location.
+
+    >[!Note]This location may vary for every VM.
 
     ![](./media/image90.png)
 
-8.  In the Foundry portal, select **Models + endpoints**, then open the
-    **Model deployments** tab.Click **Deploy model** and choose **Deploy
-    base model**.
+12. Locate your downloaded **".pem file**" in the File Explorer and copy
+    it.
 
     ![](./media/image91.png)
 
-9.  Search for +++**gpt‑4.1+++**, select the model, and click
-    **Confirm**.
+13. Paste it into the given directory. The path will look like this:
+
+    C:\Users\Admin
+
+    So the actual path will look like this:
+
+    C:\Users\Admin\\ssh\oraclelinux-key.pem
 
     ![](./media/image92.png)
 
-10. For the deployment:
+14. Navigate back to the PowerShell and run the following command to
+    know the current user:
 
-    - Set **Deployment type** to **Standard**
-
-    - Increase **Tokens per Minute Rate Limit** to the maximum
-
-    - Click **Deploy**
-
-    ![](./media/image93.png)
-
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image94.png)
-
-## Task 3: Create a virtual machine
-
-1.  Navigate to the **Home** page of the Azure Portal. Search for
-    +++**Virtual machines+++** and select it.
-
-    ![](./media/image95.png)
-
-2.  Click **+Create**. Select **Virtual Machine**.
-
-    ![](./media/image96.png)
-
-3.  In In the *Create a virtual machine* window, enter the following
-    details:
-
-    - **Subscription:** Keep the default
-
-    - **Resource group:** **ResourceGroup1**
-
-    - **Virtual machine name:** +++**oracleVirtual123+++**
-
-    - **Region:** *Central US*
-
-    - **Security type:** *Trusted launch virtual machines*
-
-    - **Image:** *Oracle Linux 8.10 (LVM) – x64 Gen2*
-
-    - Keep all other settings as default.Click **Review + create**.
-
-    ![](./media/image97.png)
-
-    ![](./media/image98.png)
-
-4.  Click **Create**.
-
-    ![](./media/image99.png)
-
-5.  When prompted,click **Download private key and create a resource**.
-
-    ![](./media/image100.png)
-
-6.  Deployment will begin. Wait **up to 5 minutes** until it completes,
-    then click **Go to resource**.
-
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image101.png)
-
-    ![](./media/image102.png)
-
-7.  Note the **public IP address** of the VM. Save it—you will use this
-    as your **Oracle host** in later tasks
-
-    ![](./media/image103.png)
-
-8.  In the left navigation menu, expand **Networking → Network
-    settings**.  
-    Click **Create port rule** and select **Inbound port rule**.
-
-    ![](./media/image104.png)
-
-9.  Add a new inbound port rule with the following values:
-
-    - **Source:** Any
-
-    - **Source port ranges:** \*
-
-    - **Destination:** Any
-
-    - **Destination port:** +++1521+++
-
-    - **Protocol:** TCP
-
-    - **Action:** Allow
-
-    - **Priority:** Default
-
-    - **Name:** +++**allow-oracle-1521+++**
-
-    - Click **Add**.
-
-    ![](./media/image105.png)
-
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image106.png)
-
-10. For **SSH Setup**, Open **PowerShell** as Administrator.Check if the
-    .ssh folder exists:
-
-    ![](./media/image107.png)
-
-11. Run the following command to check if the .ssh folder exists in your
-    system. If you receive an error, the folder does not exist
-
-    +++**dir $HOME\.ssh**+++
-
-    ![A computer screen shot of a blue screen AI-generated content may be
-    incorrect.](./media/image108.png)
-
-12. Run the following command to create the .ssh folder in the home
-    directory.
-
-    +++mkdir $HOME\.ssh+++
-
-    **Note**: The directory path where the folder is created.  
-    (*This may differ depending on the VM/user.*)
-
-    ![](./media/image109.png)
-
-13. Locate your downloaded .pem file in File Explorer and **copy it**
-
-    ![](./media/image110.png)
-
-14. Paste the .pem file into the .ssh directory.  
-    Example path:
-
-    **C:\Users\Student\.ssh\oraclelinux-key.pem**
-
-    ![](./media/image111.png)
-
-15. Return to PowerShell and check the current user:
-
-    +++**whoami**+++
+    +++whoami+++
 
     Save the output of this command in notepad for future use.
 
-    ![](./media/image112.png)
+    ![](./media/image93.png)
 
-16. Set the permission for .ssh file.
+15. Set the permission for .ssh file.
 
-    +++**icacls "$HOME\\.ssh\oracleVirtual_key.pem"/inheritance:r**+++
+    +++icacls "$HOME\\ssh\oracleVirtual_key.pem" /inheritance:r+++
 
-    +++icacls $HOME\\.ssh\oracleVirtual_key.pem /grant "\<CURRENT
+    +++icacls $HOME\\ssh\oracleVirtual_key.pem /grant "\<CURRENT
     USER\>:R"+++
 
-    **Note:** Get the current user value from the previous step.
+    >[!Note] Get the current user value from the previous step.
 
     For example:
 
-    +++icacls "$HOME\\.ssh\oracleVirtual_key.pem" /inheritance:r+++
+    +++icacls "$HOME\\ssh\oracleVirtual_key.pem" /inheritance:r+++
 
-    +++icacls $HOME\\.ssh\oracleVirtual_key.pem /grant
-    "sea-dev\student:R"+++
+    +++icacls $HOME\\ssh\oracleVirtual_key.pem /grant "base22c\Admin:R"+++
 
-    ![](./media/image113.png)
+    ![](./media/image94.png)
 
-17. Run the following command to connect to your VM:
+16. Run the following command to connect to your VM:
 
-    +++ssh -i "$HOME\\.ssh\oracleVirtual_key.pem"
+    +++ssh -i "$HOME\\ssh\oracleVirtual_key.pem"
     azureuser@\<VM_PUBLIC_IP\>+++
 
     For Example:
 
-    +++ssh -i "$HOME\\.ssh\oracleVirtual_key.pem" azureuser@20.83.43.16+++
+    +++ssh -i "$HOME\\ssh\oracleVirtual_key.pem" azureuser@20.83.43.16+++
 
-    When prompted with *“Are you sure you want to continue connecting
-    (yes/no)?”*, type +++**yes**+++
+    When you first connect with your VM, it will prompt: "Are you sure you
+    want to continue connecting (yes/no)?", the you have to enter +++yes+++
 
-    ![](./media/image114.png)
+    ![](./media/image95.png)
 
-18. Exit from the VM using the following command:
+    Now you are successfully connected to the VM.
+
+17. Exit from the VM using the following command:
 
     +++exit+++
 
-    ![](./media/image115.png)
+    ![](./media/image96.png)
 
-## Task 4: Set Up the Oracle Environment
+## Task 3: Setup the Oracle Environment
 
-1.  Open a web browser and navigate to +++
-    **https://www.oracle.com/database/technologies/xe-downloads.html**+++
-    and download : Oracle Database 21c Express edition for Linus
-    x64(OL8)+++ and download **Oracle Database 21c Express edition for
-    Linus x64(OL8)**
+In this task, you will install and configure Oracle Database 21c Express
+Edition on the virtual machine. This database simulates the legacy
+Oracle ERP system used by ZAVA's Order Management module.
 
-    ![](./media/image116.png)
+1. Open the **Edge** browser.
 
-2.  Navigate to the PowerShell and upload this .rmp file to the VM using
+1. Navigate to +++https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm+++ to download Oracle Database.
+
+1.  Navigate to the PowerShell and upload this .rmp file to the VM using
     the following command:
 
-    +++ scp -i "$HOME\\.ssh\oracleVirtual_key.pem"
+    +++scp -i "$HOME\\ssh\oracleVirtual_key.pem"
     "$HOME\Downloads\oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm"
     azureuser@\<Your-VM-IP\>:~/+++
 
     For Example:
 
-    +++ scp -i "$HOME\\.ssh\oracleVirtual_key.pem"
-    "$HOME\Downloads\oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm"
-    azureuser@20.83.43.16:~/+++
+    +++scp -i "$HOME\\ssh\oracleVirtual_key.pem" "$HOME\Downloads\oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm" azureuser@20.83.53.154:~/+++
 
-    Wait for the file upload to complete.
+    Wait for some time to download.
 
-    ![](./media/image117.png)
+    ![](./media/image97.png)
 
-3.  Connect to the VM using the following command
+2.  Connect to the VM using the following command:
 
-    +++ssh -i "$HOME\\.ssh\oracleVirtual_key.pem"<azureuser@20.83.43.16>+++
+    +++ssh -i "$HOME\\ssh\oracleVirtual_key.pem" azureuser@20.83.53.154+++
 
     ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image118.png)
+    incorrect.](./media/image98.png)
 
-4.  Run the following command to install pre-requisites for Oracle XE
+3.  Run the following command to install pre-requisites for Oracle XE
     21c.
 
-    +++ sudo dnf install -y oracle-database-preinstall-21c+++
+    +++sudo dnf install -y oracle-database-preinstall-21c+++
 
     ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image119.png)
+    incorrect.](./media/image99.png)
 
     After completing this you will get successfully message.
 
     ![A computer screen shot of a blue screen AI-generated content may be
-    incorrect.](./media/image120.png)
+    incorrect.](./media/image100.png)
 
-5.  Now run the following command to install Oracle Database 21c Express
+4.  Now run the following command to install Oracle Database 21c Express
     Edition in the VM.
 
     +++sudo dnf localinstall -y oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm+++
 
-    ![](./media/image121.png)
+    ![](./media/image101.png)
 
-6.  Configure the Oracle database:
+5.  Configure the database:
 
     +++sudo /etc/init.d/oracle-xe-21c configure+++
 
-    It will ask for a password. You can enter this +++**pAssw0rd1289**+++
+    It will ask for a password. You can enter this +++pAssw0rd1289+++
 
-    ![](./media/image122.png)
+    ![](./media/image102.png)
 
-    Save the pulugged database name that is **XEPDB1**.
+    Save the pulugged database name that is XEPDB1.
 
-    **Note:** It will take 10-15 mins to complete.
+    >[!Note] It will take 10-15 mins to complete.
 
-7.  Verify the Oracle database status.
+6.  Verify the status of Oracle database.
 
     +++sudo /etc/init.d/oracle-xe-21c status+++
 
-    If the database is running, Oracle Database 21c Express Edition has
-    been installed and configured successfully
+    It shows that the database is running, so we have successfully
+    installed and configured the Oracle Database 21c Express Edition in
+    the VM.
 
     ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image123.png)
+    incorrect.](./media/image103.png)
 
-8.  Confirm the location of the SQL*Plus executable. (Oracle XE includes
-    SQLPlus and the Instant Client.)*
+7.  Confirm the path where SQLPlus is installed. Oracle Database 21c
+    Express Edition comes with SQLPlus and the Instant Client, so we do
+    not need to install them separately.
 
-    +++**sudo find / -name sqlplus 2>/dev/null**+++
+    +++sudo find / -name sqlplus 2\>/dev/null+++
 
     ![A blue screen with red text AI-generated content may be
-    incorrect.](./media/image124.png)
+    incorrect.](./media/image104.png)
 
-9.  Add SQL\*Plus to PATH permanently.
+8.  Add SQL\*Plus to PATH permanently.
 
-    +++echo 'export ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE' >>~/.bashrc+++
+    +++echo 'export ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE' \>\> ~/.bashrc+++
 
-    +++echo 'export ORACLE_SID=XE' >> ~/.bashrc+++
+    +++echo 'export ORACLE_SID=XE' \>\> ~/.bashrc+++
 
-    +++echo 'export PATH=$ORACLE_HOME/bin:$PATH' >> ~/.bashrc+++
+    +++echo 'export PATH=$ORACLE_HOME/bin:$PATH' \>\> ~/.bashrc+++
 
     +++source ~/.bashrc+++
 
-    ![A blue screen with white text AI-generated content may be
-    incorrect.](./media/image125.png)
+    ![](./media/image105.png)
 
-10. Verify that SQL\*Plus is installed correctly
+9.  Verify that the SQL plus is set successfully.
 
     +++sqlplus -v+++
 
-    ![](./media/image126.png)
+    ![](./media/image106.png)
 
-## Task 5: Create a Database in Oracle.
+## Task 4: Create a Database in Oracle
 
-1.  Connect to the Pluggable Database (PDB) as **SYSDBA**.This logs you
-    in with full administrative privileges required for configuration
-    and migration tasks.
+In this task, you will create an application user and schema in Oracle
+and populate it with sample ERP data. This data will later be assessed,
+converted, and migrated to PostgreSQL.
+
+1.  Connect to the Pluggable Database (PDB) as SYSDBA. This logs you in
+    with full administrative privileges required for database
+    configuration and migration tasks.
 
     +++sqlplus 'sys/pAssw0rd1289' as sysdba+++
 
-    ![](./media/image127.png)
+    ![](./media/image107.png)
 
-2.  Switch the session to the Pluggable Database.This command changes
-    your session from the CDB to the target PDB so you can run
-    operations inside the PDB.
+2.  Switched to the pluggable database. This command changes your
+    session from the CDB to the target PDB so you can run operations
+    inside the PDB.
 
     +++ALTER SESSION SET CONTAINER=XEPDB1;+++
 
-    ![](./media/image128.png)
+    ![](./media/image108.png)
 
-3.  Create the **ERP user** and grant the required privileges. It
-    creates a new application user inside the PDB and assigns the
-    permissions needed to create and manage database objects.
+3.  Create the ERP user and grant the required privileges. It creates a
+    new application user inside the PDB and assigns the permissions
+    needed to create and manage database objects.
+    
+    Create a new user
 
-    ```
-    -- Create a new user
+    +++CREATE USER zava_erp IDENTIFIED BY Zava1234 DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP;+++
 
-    CREATE USER og_user
+    Grant privileges
 
-    IDENTIFIED BY ogtest1234
+    +++GRANT CONNECT, RESOURCE, CREATE TABLE, CREATE VIEW, CREATE SEQUENCE TO zava_erp;+++
 
-    DEFAULT TABLESPACE USERS
+    Give unlimited quota on USERS tablespace
 
-    TEMPORARY TABLESPACE TEMP;
+    +++ALTER USER zava_erp QUOTA UNLIMITED ON USERS;+++
 
-    GRANT CONNECT, RESOURCE, CREATE TABLE, CREATE VIEW, CREATE SEQUENCE,
-    CREATE PROCEDURE TO og_user;
+    +++ALTER PLUGGABLE DATABASE XEPDB1 SAVE STATE;+++
 
-    ALTER USER og_user QUOTA UNLIMITED ON USERS;
+    ![](./media/image109.png)
 
-    ALTER PLUGGABLE DATABASE XEPDB1 SAVE STATE;
+4.  Run +++exit+++to exit.
 
-    ALTER SESSION SET CONTAINER = XEPDB1;
+    ![](./media/image110.png)
 
-    GRANT SELECT ANY TABLE TO og_user;
+5.  Connect as the new ERP user.
 
-    GRANT SELECT ON dba_users TO og_user;
-    ```
+    +++sqlplus zava_erp/Zava1234@localhost:1521/XEPDB1+++
 
-    ![A screenshot of a computer program AI-generated content may be
-    incorrect.](./media/image129.png)
+    ![](./media/image111.png)
 
-4.  Run +++exit+++ to exit SQL\*Plus
+6.  Create tables and insert sample data.
 
-    ![](./media/image130.png)
+    Create tables
+    
+    +++CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, first_name VARCHAR2(50), last_name VARCHAR2(50), email VARCHAR2(100));+++
+    
+    +++CREATE TABLE orders (order_id NUMBER PRIMARY KEY, customer_id NUMBER REFERENCES customers(customer_id), order_date DATE, amount NUMBER(10,2));+++
+    
+    Insert sample data
+    +++INSERT INTO customers VALUES (1, 'John', 'Doe', 'john.doe@example.com');+++
+    +++INSERT INTO customers VALUES (2, 'Jane', 'Smith', 'jane.smith@example.com');+++
+    
+    +++INSERT INTO orders VALUES (1001, 1, SYSDATE, 250.75);+++
+    +++INSERT INTO orders VALUES (1002, 2, SYSDATE, 120.50);+++
+    
+    +++COMMIT;+++
+    
+    Verify data
+    +++SELECT * FROM customers;+++
+    +++SELECT * FROM orders;+++
+    
+    ![](./media/image112.png)
 
-    ![](./media/image131.png)
+7.  Verify the orders table.
 
-## Task 6 – Create Multiple Schemas
+    +++SELECT * FROM orders;+++
 
-1.  Run below commands to create Application Schemas (Users)
+    ![](./media/image113.png)
 
-    ```
+8.  Check constraints and table structure.
 
-    -- Login
+    +++DESCRIBE customers;+++
 
-    sqlplus 'sys/pAssw0rd1289' as sysdba
+    +++DESCRIBE orders;+++
 
-    ALTER SESSION SET CONTAINER =XEPDB1;
+    And exit from the current console using +++exit+++.
 
-    -- Schema 1
+    ![](./media/image114.png)
 
-    CREATE USER flight_core IDENTIFIED BY Flight123;
+## Task 5: Install and Set Up the Ora2pg tool
 
-    GRANT CONNECT, RESOURCE, CREATE VIEW, CREATE PROCEDURE TO flight_core;
+In this task, you will install Ora2Pg along with the required Oracle
+client libraries and Perl dependencies. Ora2Pg will be used to assess
+compatibility and perform the Oracle-to-PostgreSQL migration.
 
-    ALTER USER flight_core QUOTA UNLIMITED ON USERS;
+1.  Install **perl** using the following command.
 
-    -- Schema 2
+    +++sudo dnf install -y perl perl-core perl-devel+++
 
-    CREATE USER booking_mgmt IDENTIFIED BY Book123;
+    ![](./media/image115.png)
 
-    GRANT CONNECT, RESOURCE, CREATE VIEW, CREATE PROCEDURE TO booking_mgmt;
+2.  Verify the **perl version**.
 
-    ALTER USER booking_mgmt QUOTA UNLIMITED ON USERS;
+    +++perl -v+++
 
-    You now have **2 schemas**:
+    ![](./media/image116.png)
 
-    - flight_core (master data)
+3.  Install required Perl dependencies for Ora2Pg:
 
-    - booking_mgmt (transactions)
-    ```
-
-    ![](./media/image132.png)
-
-## Task 7 –Create Tables, Views, SPs
-
-Object-to-Schema Mapping
-| Object  | Schema(User) | 
-|----------|----------|
-| Flights table   | flight_core   | 
-| Bookings table  | booking_mgmt   | 
-| Views  | booking_mgmt   | 
-| Stored Procedures  |    | 
-| Admin queries   | zava_erp    | 
-
-1. Run below queries to create table
-    ```
-
-    -- flight_core schema
-
-    CREATE TABLE flight_core.flights (
-
-    flight_id NUMBER PRIMARY KEY,
-
-    origin VARCHAR2(50),
-
-    destination VARCHAR2(50),
-
-    base_price NUMBER
-
-    );
-
-    CREATE TABLE booking_mgmt.bookings (
-
-    booking_id NUMBER PRIMARY KEY,
-
-    flight_id NUMBER,
-
-    seats NUMBER,
-
-    total_price NUMBER
-
-    );
-    ```
+    +++sudo dnf install -y perl perl-DBI perl-DBD-Pg gcc make+++
 
     ![A screenshot of a computer program AI-generated content may be
-    incorrect.](./media/image133.png)
+    incorrect.](./media/image117.png)
 
-2.  Run below query to create view
-    ```
+4.  Now switch to root environment.
 
-    GRANT SELECT ON flight_core.flights TO booking_mgmt;
+    +++sudo -i+++
 
-    CREATE VIEW booking_mgmt.vw_flight_prices AS
+5.  Set environment variables for root:
 
-    SELECT f.flight_id, f.origin, f.destination, f.base_price
+    +++export ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE+++
 
-    FROM flight_core.flights f;
-    ```
+    +++export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH+++
+
+    +++export PATH=$ORACLE_HOME/bin:$PATH+++
+
+    +++perl -V # optional: confirm ORACLE_HOME/bin is in PATH+++
+
+    ![](./media/image118.png)
+
+6.  Verify the value of the environment that you have set in the
+    previous step: +++echo $ORACLE_HOME+++
+
+    +++echo $LD_LIBRARY_PATH+++
+
+    +++echo $PATH+++
 
     ![A blue screen with white text AI-generated content may be
-    incorrect.](./media/image134.png)
+    incorrect.](./media/image119.png)
 
-3.  Run below query to create stored procedure
-    ```
-    CREATE OR REPLACE PROCEDURE booking_mgmt.calculate_price ( 
+7.  Install **libaio** and **libaio-devel** libraries
 
-      p_flight_id IN NUMBER, 
+    +++sudo dnf install -y libaio libaio-devel+++
 
-      p_seats     IN NUMBER, 
+    +++sudo dnf install -y gcc make+++
 
-      p_total     OUT NUMBER 
+    ![](./media/image120.png)
 
-    ) AS 
+    ![](./media/image121.png)
 
-      v_price NUMBER; 
+8.  Verify the installed libraries.
 
-    BEGIN 
+    +++ls /usr/lib64/libaio*+++
 
-      SELECT f.base_price 
+    ![](./media/image122.png)
 
-        INTO v_price 
+9.  Launch CPAN
 
-        FROM flight_core.flights f 
+    +++cpan+++
 
-       WHERE f.flight_id = p_flight_id; 
+    It will prompt: Would you like to configure as much as possible
+    automatically? \[yes\] then enter +++yes+++
 
-    
+    ![A computer screen with white text AI-generated content may be
+    incorrect.](./media/image123.png)
 
-      p_total := v_price * p_seats; 
+10. Install DBD::Oracle using the following command in CPAN:
 
-    END; 
+    +++force install DBD::Oracle+++
 
-    / 
+    ![](./media/image124.png)
 
-    SHOW ERRORS PROCEDURE booking_mgmt.calculate_price; 
-    ```
-    ![A computer screen shot of white text AI-generated content may be
-    incorrect.](./media/image135.png)
-
-    ![A screenshot of a computer program AI-generated content may be
-    incorrect.](./media/image136.png)
-
-2. Run below commands to grant access to ERP user
-    ```
-
-    -- allows querying DBA_* and other catalog views safely
-
-    GRANT SELECT_CATALOG_ROLE TO og_user;
-
-    -- some tools also require broader dictionary access
-
-    GRANT SELECT ANY DICTIONARY TO og_user;
-
-    -- required for extracting DDL via DBMS_METADATA
-
-    GRANT EXECUTE ON DBMS_METADATA TO og_user;
-
-    -- (optional but often useful for dependency resolution)
-
-    GRANT CREATE ANY VIEW TO og_user;
-
-    GRANT CREATE ANY PROCEDURE TO og_user;
-
-    GRANT CREATE ANY SEQUENCE TO og_user;
-    ```
-
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image137.png)
-
-4.  Run exit command to come from SQL window
+11. Exit from CPAN using the following command:
 
     +++exit+++
 
-5.  Run these commands on the VM to ensure port 1521.
-    ```
+    ![](./media/image125.png)
 
-    sudo firewall-cmd --add-port=1521/tcp --permanent
+12. Verify DBD.
 
-    sudo firewall-cmd --reload
+    +++perl -MDBD::Oracle -e 'print $DBD::Oracle::VERSION."\n";'+++
 
-    sudo firewall-cmd --list-ports
+    ![](./media/image126.png)
 
-    lsnrctl stop
+13. Navigate back to the azureuser directory.
 
-    lsnrctl start
-    ```
+    +++su - azureuser+++
 
-    ![A computer screen shot of a blue screen AI-generated content may be
-    incorrect.](./media/image138.png)
+    ![](./media/image127.png)
 
-6.  Open new Powershell and run to test VM connection status
+14. Download Ora2Pg using the following command.
 
-    +++Test-NetConnection \<YOUR_VM_IP\> -Port 1521+++
+    +++wget https://github.com/darold/ora2pg/archive/master.zip+++
 
-    ![A computer screen with white text AI-generated content may be
-    incorrect.](./media/image139.png)
+    ![](./media/image128.png)
 
-## Task 8 – Oracle to Azure Database for PostgreSQL Schema Conversion
+15. Unzip the mazter.zip file.
 
-1.  Open **Visual Studio Code** and go to the **Extensions** view
-    (Ctrl + Shift + X).
+    +++unzip master.zip+++
 
-2.  Search for +++***PostgreSQL+++*** and **install**
-    the **PostgreSQL** extension.
+    ![](./media/image129.png)
+
+16. Change the directory
+
+    +++cd ora2pg-master+++
+
+    ![](./media/image130.png)
+
+17. Run the following commands to install Ora2pg:
+
+    +++perl Makefile.PL+++
+
+    +++make+++
+
+    +++sudo make install+++
+
+    ![](./media/image131.png)
+
+18. Verify your Ora2pg using the following command:
+
+    +++ora2pg -v+++
+
+    ![](./media/image132.png)
+
+19. Change the directory.
+
+    +++cd ~+++
+
+    ![](./media/image133.png)
+
+20. Copy the config file to your home directory:
+
+    +++cp /etc/ora2pg/ora2pg.conf.dist ora2pg.conf+++
+
+    ![](./media/image134.png)
+
+21. Edit the ora2pg.conf file.
+
+    +++nano ora2pg.conf+++
+
+22. In the ora2pg.conf file, locate ORACLE_DSN, ORACLE_USER, and
+    ORACLE_PWD
+
+    ![](./media/image135.png)
+    Now replace the existing value with your values:
+
+    ORACLE_DSN +++dbi:Oracle:host=localhost;port-1521;service_name=XEPDB1+++
+
+    ORACLE_USER +++zava_erp+++
+
+    ORACLE_PWD +++Zava1234+++
+
+    After setting up these values, press **Ctrl+X-\>Y-\>Enter** to save
+    the file.
+
+    ![](./media/image136.png)
+
+23. Run the following command to set environment variables:
+
+    +++echo 'export ORACLE_HOME=/opt/oracle/product/21c/dbhomeXE' \>\> ~/.bashrc+++
+
+    +++echo 'export LD_LIBRARY_PATH=$ORACLE_HOME/lib' \>\> ~/.bashrc+++
+
+    +++echo 'export PATH=$ORACLE_HOME/bin:$PATH' \>\> ~/.bashrc+++
+
+    +++source ~/.bashrc+++
+
+    ![](./media/image137.png)
+
+24. Verify Oracle client files exist.
+
+    +++ls $ORACLE_HOME/lib | grep libclntsh+++
+
+    ![](./media/image138.png)
+
+25. Add Oracle lib path to ldconfig
+
+    +++sudo sh -c 'echo /opt/oracle/product/21c/dbhomeXE/lib \> /etc/ld.so.conf.d/oracle.conf'+++
+
+    +++sudo ldconfig+++
+
+    ![](./media/image139.png)
+
+26. Test DBD::Oracle connection.
+
+    +++perl -MDBD::Oracle -e 'print $DBD::Oracle::VERSION'+++
 
     ![](./media/image140.png)
 
-3.  In the PostgreSQL extension panel, create a connection to your
-    **Azure Database for PostgreSQL** by clicking **Add Connection**.
+    Now the or2pg is successfully connect with Oracle database.
+
+## Task 6: Pre-Migration Validation
+
+In this task, you will prepare the Oracle database for migration by
+gathering optimizer and dictionary statistics. This ensures accurate
+cost estimation and schema analysis during the Ora2Pg assessment phase.
+
+1.  Connect to Oracle as SYSDBA
+
+    +++sqlplus sys/pAssw0rd1289 as sysdba+++
 
     ![](./media/image141.png)
 
-4.  Enter the required connection details from the PostgreSQL server you
-    created in **Task 1**, then click **Test Connection**:
+2.  Switch to the Pluggable Database.
 
-    - Host : **postgrenewserverXXXX.postgres.database.azure.com** (Replace
-    XXXX with your server number)
-
-    - User Name : **+++pgAdmin+++**
-
-    - Password : +++**pAssw0rd1289+++**
-
-    - DATABASE NAME : +++**postgres+++**
+    +++ALTER SESSION SET CONTAINER=XEPDB1;+++
 
     ![](./media/image142.png)
 
-5.  Click on **Save & Connect.**
+3.  Gather Oracle Statistics.
+
+
+    +++EXEC DBMS_STATS.GATHER_SCHEMA_STATS('ZAVA_ERP');+++
+    +++EXEC DBMS_STATS.GATHER_DICTIONARY_STATS;+++
+    +++EXIT;+++ 
+
 
     ![](./media/image143.png)
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image144.png)
+    This ensures accurate Ora2Pg cost and size estimates.
 
-6.  Create a new folder on your local machine to store your migration
-    project.
+## Task 7: Run Ora2Pg Migration Assessment
 
-7.  In **Visual Studio Code, go to File → Open Folder**
+In this task, you will generate a high-level compatibility and effort
+assessment report using Ora2Pg. This report helps identify
+Oracle-specific features and potential migration challenges before
+execution.
+
+1.  Generate Assessment Report.
+
+    +++ora2pg -t SHOW_REPORT -c ~/ora2pg.conf --estimate_cost+++
+
+    ![](./media/image144.png)Now in the generated report review-
+
+    - Object compatibility
+
+    - Estimated migration effort
+
+    - Oracle-specific features requiring manual changes
+
+## Task 8: Create Ora2Pg Migration Template
+
+In this task, you will initialize an Ora2Pg project structure to
+organize migration artifacts. This project template separates
+configuration, schema exports, data files, and reports.
+
+1.  Create Migration Working Directory.
+
+    +++mkdir -p ~/ora_migrate+++
+
+2.  Initialize Ora2Pg Project Template.
+
+    +++ora2pg --project_base ora_migrate --init_project zava_project+++
 
     ![](./media/image145.png)
 
-8.  Select the folder you created and open it.
+## Task 9: Configure Ora2Pg Project
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image146.png)
+In this task, you will configure the Ora2Pg project to scope the
+migration to the ZAVA ERP schema. You will also define which database
+objects are included in the migration.
 
-9.  In the PostgreSQL extension pane, click **PostgreSQL server** to
-    connect, then select **Create Migration Project**
+1.  Edit Project Configuration File.
+
+    +++cd ~/ora_migrate/zava_project/config+++
+
+    +++nano ora2pg.conf+++
+
+2.  In the ora2pg.conf file update Oracle connection settings. Here you
+    replace the existing value with your values:
+
+    ORACLE_DSN +++dbi:Oracle:host=localhost;port=1521;service_name=XEPDB1+++
+    
+    ORACLE_USER +++zava_erp+++
+
+    ORACLE_PWD +++Zava1234+++
+
+    ![](./media/image146.png)
 
     ![](./media/image147.png)
 
-10. In the **Migration Wizard**, enter your **project name** as
-    +++**ogtopgaimigration+++** and then click on **Next :** **Oracle
-    Connection**
+3.  In the same file update limit mirgation scope to application scope.
+
+    SCHEMA +++ZAVA_ERP+++
 
     ![](./media/image148.png)
 
-11. Enter your **Oracle connection details** :
+4.  Specify Object Types to Migrate.
 
-    1.  Host or server name : \<Your VM’s IP Address\>
-
-    2.  Port number : **1521**
-
-    3.  Oracle SID or Server Name : +++**XEPDB1+++**
-
-    4.  Username : +++**og_user+++**
-
-    5.  Password : +++**ogtest1234+++**
-
-    6.  The tool will automatically load schemas and connect to the
-        Oracle database.
+    +++TABLE,SEQUENCE,INDEX,CONSTRAINT+++
 
     ![](./media/image149.png)
 
-12. Expand the **Schemas** dropdown, select **FLIGHT_CORE** and
-    **BOOKING_MGMT**, then click **Next: PostgreSQL Connection**
+    To save and exit, press **Ctrl + X → Y → Enter**.
 
     ![](./media/image150.png)
 
-13. Click **Load Databases** to load your PostgreSQL server databases.  
-    After loading, click **Next: Language Model Configuration**.
+## Task 10: Run Migration Assessment
+
+In this task, you will generate a detailed compatibility report using
+the Ora2Pg project configuration. This report provides object-level
+insights and highlights areas requiring manual remediation.
+
+1.  Generate Detailed Compatibility Report.
+
+    +++cd ~/ora_migrate/zava_project+++
+
+    +++./export_schema.sh -t SHOW_REPORT+++
 
     ![](./media/image151.png)
 
-14. Enter the following details for Microsoft Foundry:
+2.  Review Report Location.
 
-    - **OpenAI Endpoint:** *Your Foundry API endpoint*
-
-    - **OpenAI API Key:** *Your Foundry Key 1 value*
-
-    Then click **Test OpenAI Connection**
+    +++ls reports/+++
 
     ![](./media/image152.png)
 
-15. Click **Create Migration Project**
+    You can open each file and review:
+
+    - Compatibility issues
+
+    - Oracle-specific features
+
+    - Estimated migration effort
+
+## Task 11: Export Oracle Schema
+
+In this task, you will export the Oracle schema objects as
+PostgreSQL-compatible SQL scripts. These scripts will later be applied
+to the Azure PostgreSQL target database.
+
+1.  Generate Schema Scripts.
+
+    +++./export_schema.sh+++
 
     ![](./media/image153.png)
 
-16. Under the **Schema Migration** tile, click the **Migrate** button.
+2.  Validate Generated Schema Files.
+
+    +++ls schema/+++
 
     ![](./media/image154.png)
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image155.png)
+## Task 12: Prepare Azure PostgreSQL Target Environment
 
-17. Monitor the schema conversion progress inside Visual Studio Code.
+In this task, you will configure the PostgreSQL target database, schema,
+and extensions required for the migrated workload. This prepares the
+destination environment for schema and data import.
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image156.png)
+1.  Navigate back to the Azure portal and **Resource
+    group-\>ResourceGroup1-\>Azure Database for PostgreSQL Flexible
+    Server**.
 
-18. Once the conversion completes, a **Schema Conversion Report** is
-    generated.  
-    Review objects that were successfully converted and those that were
-    skipped.
+    ![](./media/image155.png)
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image157.png)
+2.  Save the endpoint in the Notepad for future use.
 
-19. The report displays the **success percentage** of the conversion.
-    The report will display the **overall conversion success
-    percentage**.
+    ![](./media/image156.png)
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image158.png)
+3.  Open **Cloud shell**.
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image159.png)
+    ![](./media/image157.png)
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image160.png)
+4.  Click **Bash**.
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image161.png)
+    ![](./media/image158.png)
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image162.png)
+5.  Select **Mount storage account** and select @lab.CloudSubscription.Name.
+    Click **Apply**.
 
-# Exercise 2 : Oracle to Azure Database for PostgreSQL Application Conversion (Preview)
+    ![](./media/image159.png)
 
-This exercise guides you through converting Oracle client application
-code to Azure Database for PostgreSQL using the **Application
-Conversion** feature in the Oracle to Azure Database for PostgreSQL
-migration tooling available in the **Visual Studio Code PostgreSQL
-extension**.
+6.  Select **we will create storage for you**. Click **Next.**
 
-You will learn how to:
+    ![](./media/image160.png)
 
-- Import your source application code into the migration workspace
+    ![](./media/image161.png)
 
-- Start the automated application code conversion process
+7.  Connect to PostgreSQL Flexible Server.
 
-- View the generated migration report
+    +++psql "host=postgrenewserver.postgres.database.azure.com port=5432 dbname=postgres user=pgAdmin password=pAssw0rd1289 sslmode=require"+++
 
-- Review and compare converted files using the built‑in diff tools
+    ![](./media/image162.png)
 
-While it is not mandatory to perform a schema conversion beforehand, we
-**strongly recommend** completing a schema migration first.  
-If your Oracle schema has already been converted to PostgreSQL, the
-application conversion process produces **more accurate** and
-**higher‑quality** transformation results.
+8.  Create Target Database.
 
-## **Task 1:** Build your application 
+    +++CREATE DATABASE ora_migrate;+++
 
-1.  Open **Git Bash** and navigate to the application directory
+    ![](./media/image163.png)
 
-    +++cd "Users/Student/containerize-and-deploy-Java-app-to-Azure/"+++
+9.  Connect to the Database.
 
-    ![](./media/image163.jpeg)
+    +++\c ora_migrate+++
 
-2.  Build the Airlines application by running the Maven command from the
-    project folder
+    ![](./media/image164.png)
 
-    +++cd "Project/Airlines"+++
+10. Create Target Schema.
 
-    +++mvn clean package+++
+    +++CREATE SCHEMA zava_erp;+++
 
-    ![](./media/image164.jpeg)
+    +++ALTER SCHEMA zava_erp OWNER TO "pgAdmin";+++
 
-    ![](./media/image165.jpeg)
-    ![](./media/image166.jpeg)
-    ![](./media/image167.jpeg)
-    ![](./media/image168.jpeg)
-    ![](./media/image169.jpeg)
+    ![](./media/image165.png)
 
-## Task 2 : Set up Copilot environment
+11. Enable Required Extensions.
 
-1.  In Visual Studio Code, click the **Copilot** icon in your project
+    +++CREATE EXTENSION IF NOT EXISTS pg_trgm;+++
+
+    +++CREATE EXTENSION IF NOT EXISTS btree_gin;+++
+
+    ![](./media/image166.png)
+
+12. Enter +++\q+++ to exit.
+
+## Task 13: Import Schema into Azure PostgreSQL
+
+In this task, you will apply the converted schema scripts to Azure
+Database for PostgreSQL in the correct dependency order. This ensures
+tables, constraints, indexes, and sequences are created successfully.
+
+1.  Navigate back to Powershell.
+
+2.  Run the following command to install PostgreSQL client on your
+    Oracle VM.
+
+    +++sudo dnf install -y postgresql postgresql-contrib+++
+
+3.  Set PostgreSQL Environment Variables:
+
+    +++export PGHOST=postgrenewserver.postgres.database.azure.com+++
+
+    +++export PGPORT=5432+++
+
+    +++export PGDATABASE=ora_migrate+++
+
+    +++export PGUSER=pgAdmin+++
+
+    +++export PGPASSWORD=pAssw0rd1289+++
+
+    ![](./media/image167.png)
+
+4.  Import files in correct order. Run these commands one by one:
+
+    1. Import base tables first
+    +++psql "host=$PGHOST port=$PGPORT dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD sslmode=require" -f ./schema/tables/table.sql+++
+    
+    2. Import constraints (foreign keys)
+    +++psql "host=$PGHOST port=$PGPORT dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD sslmode=require" -f ./schema/tables/CONSTRAINTS_table.sql+++
+    
+    3. Import indexes
+    +++psql "host=$PGHOST port=$PGPORT dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD sslmode=require" -f ./schema/tables/INDEXES_table.sql+++
+    
+    4. Import logical sequences if any
+    +++psql "host=$PGHOST port=$PGPORT dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD sslmode=require" -f ./schema/tables/LOGICAL_table.sql+++
+    
+    ![](./media/image168.png)
+
+## Task 14: Migrate Data from Oracle to Azure PostgreSQL
+
+In this task, you will extract data from Oracle in PostgreSQL COPY
+format using Ora2Pg. You will then load this data into the PostgreSQL
+target database.
+
+1.  Run the following commands to grant required Oracle permissions for
+    Ora2Pg:
+
+    +++sqlplus sys/pAssw0rd1289 as sysdba+++
+
+    +++ALTER SESSION SET CONTAINER=XEPDB1;+++
+
+    +++GRANT SELECT ON v_$database TO ZAVA_ERP;+++
+
+    ![](./media/image169.png)
+
+2.  Run the following command to extract Oracle data in PostgreSQL COPY
+    format:
+
+    +++ora2pg -t COPY -o data.sql -b ./data -c ./config/ora2pg.conf+++
 
     ![](./media/image170.png)
 
-2.  Select **Continue with GitHub**
+3.  After successful execution, the data file will be created
+    at:./data/data.sql. So to confirm the data file was created run the
+    following command:
+
+    +++ls -l ./data+++
 
     ![](./media/image171.png)
 
-3.  Sign in with your GitHub account that has a **Copilot Premium**
-    license assigned
+4.  Use psql to load the data into PostgreSQL:
+
+    +++psql "host=$PGHOST port=$PGPORT dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD sslmode=require" -f ./data/data.sql+++
 
     ![](./media/image172.png)
 
-4.  Switch back to Visual Studio Code. Open the **GitHub Copilot Chat**
-    interface and select **Claude Sonnet 4** (or a higher supported
-    model).
+## Task 15: Validate Data Migration
 
-    ![](./media/image173.jpeg)
+In this task, you will validate the migration by checking row counts,
+sample records, and table accessibility in PostgreSQL. Successful
+validation confirms that the ERP Order Management data migrated
+correctly.
 
-    ![](./media/image174.jpeg)
+1.  Connect to PostgreSQL:  
+    +++psql "host=$PGHOST port=$PGPORT dbname=$PGDATABASE user=$PGUSER password=$PGPASSWORD sslmode=require"+++
 
-5.  In the Explorer panel, select the project folder and expand the
-    **.github/** directory.
+    ![](./media/image173.png)
 
-    ![](./media/image175.jpeg)
+2.  Run validation queries:
 
-6.  Refresh **application_code** folder
+    List tables
+    
+    +++SET search_path TO public;+++
+    
+    Check row counts 
+    +++SELECT COUNT(\*) FROM customers;+++
+    +++SELECT COUNT(\*) FROM orders;+++
+    
+    Sample data check
+    +++SELECT * FROM customers LIMIT 10;+++
+    +++SELECT * FROM orders LIMIT 10;+++
 
-    ![](./media/image176.jpeg)
+    ![](./media/image174.png)
 
-## Task 3: Start Application migration
+    ![](./media/image175.png)
 
-1.  Locate the **application_code** folder in your project
-    under .github/postgres-migration/project_name/application_code.
+## Summary
 
-    ![](./media/image177.png)
-
-2.  Expand **application_code** folder and make sure the application
-    code available in migration folder
-
-    ![](./media/image178.jpeg)
-
-3.  From the left navigation menu, open the **PostgreSQL** extension and
-    select your migration project folder
-
-    ![](./media/image179.png)
-
-4.  Under the **Application Migration** tile, click **Migrate
-    Application**
-
-    ![](./media/image180.png)
-
-5.  In the **Application Conversion Folder** dropdown, select the
-    appropriate application folder
-
-    ![](./media/image181.png)
-
-6.  Click on PostgreSQL connection drop down and select PostgreSQL
-    connection
-
-    ![](./media/image182.png)
-
-7.  Click on Load Databases and Select PostgreSQL database dropdown
-
-8.  Click on **Convert Application**
-
-    ![](./media/image183.png)
-
-    ![](./media/image184.png)
-
-9.  Enable access to the **Claude Sonnet 4 model.** Allow model to
-    connect to the PostgreSQL database server
-
-    ![](./media/image185.png)
-
-    ![](./media/image186.png)
-
-10. Allow to list all database servers’ registration.
-
-    ![](./media/image187.png)
-
-11. Allow to connect to the PostgreSQL server. Allow to fetch database
-    objects
-
-    ![](./media/image188.png)
-
-    ![](./media/image189.png)
-
-    ![](./media/image190.png)
-
-12. Allow to query database. Allow to fetch **booking_mgmt** database
-    object
-
-    ![](./media/image191.png)
-
-    ![](./media/image192.png)
-
-13. Click **Continue** to allow Copilot to iterate and refactor Java
-    files for better understanding of database access patterns.
-
-    ![](./media/image193.png)
-
-14. Allow copilot to build the project using maven
-
-    ![](./media/image194.png)
-
-    ![](./media/image195.png)
-
-    ![](./media/image196.png)
-
-    ![](./media/image197.jpeg)
-
-15. Generating migration report. Migration completed and report got
-    generated
-
-    ![](./media/image198.png)
-
-16. Explore the generated report and review the following sections:
-
-    - PostgreSQL environment and required extensions
-
-    - Directory structure before and after migration
-
-    - Files successfully converted
-
-    - Database schema impact analysis
-
-    - Key schema changes applied
-
-    - Updated database connection settings
-
-    - Data access layer updates
-
-    - Features detected and handled during migration
-
-    ![](./media/image199.jpeg)
-    ![](./media/image200.jpeg)
-    ![](./media/image201.jpeg)
-    ![](./media/image202.jpeg)
-    ![](./media/image203.jpeg)
-    ![](./media/image204.jpeg)
-    ![](./media/image205.jpeg)
-    ![](./media/image206.jpeg)
-    ![](./media/image207.jpeg)
-    ![](./media/image208.jpeg)
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image209.png)
+This lab demonstrates a heterogeneous migration of ZAVA DIY's Oracle
+ERP Order Management module to Azure Database for PostgreSQL -
+Flexible Server. You provision the target PostgreSQL environment and
+set up an Oracle source system on an Azure virtual machine. Using
+Ora2Pg, you assess schema compatibility, convert Oracle objects, and
+generate PostgreSQL-compatible scripts. The lab guides you through
+migrating schema and data while preserving relationships and
+constraints. Finally, you validate the migration to ensure data
+consistency and continuity of critical e-commerce workflows.
