@@ -1,4 +1,4 @@
-# Lab 4- Build Advanced AI Agents with PostgreSQL
+# Lab 3 - Build Advanced AI Agents with PostgreSQL
 
 ## Scenario
 
