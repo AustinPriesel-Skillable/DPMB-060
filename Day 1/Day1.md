@@ -1,4 +1,3 @@
-
 # Lab 01 - Deploying and Optimizing ZAVA Retail App using Azure Database for PostgreSQL - Flexible Server
 
 ## Scenario
@@ -91,7 +90,7 @@ performance and resilience.
 
     ![](https://raw.githubusercontent.com/technofocus-pte/mgrtdtbstoazdtbspsqldepth/refs/heads/main/Day%201/media/image3.png) 
 
-2.  Search +++**Azure Database for PostgreSQL Flexible Server**+++ in the search bar.
+2.  Search +++Azure Database for PostgreSQL Flexible Server+++ in the search bar.
 
     ![](https://raw.githubusercontent.com/technofocus-pte/mgrtdtbstoazdtbspsqldepth/refs/heads/main/Day%201/media/image4.png)
 
@@ -102,13 +101,13 @@ performance and resilience.
 
 4.  Enter the following details.
 
-    - Subscription: Keep the default as it is.
+    - Subscription: @lab.CloudSubscription.Name
 
-    - Resource group: Select **@lab.CloudResourceGroup(ZAVA-Connect-RG).Name**
+    - Resource group: @lab.CloudResourceGroup(ZAVA-Connect-RG).Name
 
-    - Server name: Enter +++zava-connect-db@lab.LabInstance.Id+++
+    - Server name: +++zava-connect-db@lab.LabInstance.Id+++
 
-    - Region: Select Central US
+    - Region: @lab.CloudResourceGroup(ZAVA-Connect-RG).Location
 
     - PostgreSQL version: 16
 
@@ -138,9 +137,9 @@ performance and resilience.
 6.  Under Authentication. Select **PostgreSQL authentication only**
     authentication method and enter the following login and password:
 
-    - Administrator login: Enter +++postgres+++
+    - Administrator login: +++postgres+++
 
-    - Password: Enter +++PAssw0rd1a+++
+    - Password: +++PAssw0rd1a+++
 
     Select **Next:Networking**
 
@@ -759,14 +758,13 @@ Now your server is ready for fabric mirroring.
 
 4.  Enter the connection details:
 
-    - Server name: Enter
-    +++zava-connect-db@lab.LabInstance.Id.postgres.database.azure.com+++
+    - Server name: +++zava-connect-db@lab.LabInstance.Id.postgres.database.azure.com+++
 
-    - Database name: Enter +++zava_connect_retail+++
+    - Database name: +++zava_connect_retail+++
 
-    - Username: Enter +++postgres+++
+    - Username: +++postgres+++
 
-    - Password: Enter +++PAssw0rd1a+++
+    - Password: +++PAssw0rd1a+++
 
     Click **Connect**.
 
@@ -917,11 +915,11 @@ continuity even in regional outages.
 
 2.  Enter the following details:
 
-    - **Resource group**: Select ResourceGroup1
+    - **Resource group**: @lab.CloudResourceGroup(ZAVA-Connect-RG).Name
 
-    - **Server name**: Enter +++zava-connect-replica@lab.LabInstance.Id+++
+    - **Server name**:  +++zava-connect-replica@lab.LabInstance.Id+++
 
-    - **Location**: Central US
+    - **Location**: @lab.CloudResourceGroup(ZAVA-Connect-RG).Location
 
     Click **Next: Networking**
 

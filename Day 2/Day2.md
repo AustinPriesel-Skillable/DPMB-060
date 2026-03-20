@@ -1,3 +1,13 @@
+!INSTRUCTIONS [ ](https://raw.githubusercontent.com/LODSContent/All-MOC/master/MOC/@lab.LanguageCode/tap_alert.md)
+
+!instructions[](https://raw.githubusercontent.com/LODSContent/All-MOC/refs/heads/master/MOC/@lab.LanguageCode/MSDepth-CS-Login.md)
+
+===
+
+!instructions[](https://raw.githubusercontent.com/LODSContent/All-MOC/refs/heads/master/MOC/en/MultiLineCodeHint.md) 
+
+<!-- !instructions[](./Day2.md) -->
+
 
 # Lab 02 - End-to-End Migration of ZAVA's On-Prem PostgreSQL to Azure Database for PostgreSQL - Flexible Server (Homogeneous Migration)
 
@@ -105,15 +115,15 @@ on-premises environment for ZAVA Express Logistics.
 
 4.  Fill in the required ARM template parameters.
 
-    - **Subscription:** @lab.CloudSubscription.Name
+    - **Subscription:** **@lab.CloudSubscription.Name**
 
-    - **Resource group:** **ResourceGroup1**
+    - **Resource group:** **@lab.CloudResourceGroup(ResourceGroup1).Name**
 
-    - **Region:** @lab.CloudResourceGroup(ResourceGroup1).Location
+    - **Region:** **@lab.CloudResourceGroup(ResourceGroup1).Location**
 
-    - **Resource Name Base:** Enter +++ZavaWeb@lab.LabInstance.Id+++
+    - **Resource Name Base:** +++ZavaWeb@lab.LabInstance.Id+++
 
-    - **Password:** Enter +++pass@dmIn234+++
+    - **Password:** +++pass@dmIn234+++
 
     Select **Review + create.**
 
@@ -177,9 +187,9 @@ ARM Template deployment.
 
     - **Authentication Type:** VM Password
 
-    - **Username:** Enter +++demouser+++
+    - **Username:** +++demouser+++
 
-    - **VM Password:** Enter +++pass@dmIn234+++
+    - **VM Password:** +++pass@dmIn234+++
 
     Then click on the **Connect** button to connect with Bastion.
 
@@ -289,13 +299,12 @@ ARM Template deployment.
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image25.png)
 
-3.  Open a new browser window, then navigate to the
-    following **http:// URL** to access the simulated on-premises web
-    application provisioned for this lab. Be sure to replace
-    the **\<ip-address\>** placeholder with the Public IP Address for
-    the VM. For example: http://172.206.126.43
+3.  Open a new browser window, then navigate to the **public ip address** to access the simulated on-premises web
+    application provisioned for this lab,
+    
+    **For Example:** http://172.206.126.43
 
-    +++http://\<ip-address\>+++
+    +++http://*ip-address*+++
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image26.png)
@@ -303,9 +312,10 @@ ARM Template deployment.
     >[!Note]You should get the Red Hat Enterprise Linux Test Page 
 
 4.  When the web page loads, enter the following at the end of the URL.
-    For example: "http://172.206.126.43/orders.php"
+    
+    **For example:** "http://172.206.126.43/orders.php"
 
-    +++http://\<ip-address\>/orders.php+++
+    +++http://*ip-address*/orders.php+++
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image27.png)
@@ -335,8 +345,7 @@ target for the database migration.
 
     ![A screenshot of a computer AI-generated content may be incorrect.](./media/image29.png)
 
-3.  Click **Create** and then select +++Azure Database for PostgreSQL
-    Flexible Server+++.
+3.  Click **Create** and then select +++Azure Database for PostgreSQL Flexible Server+++.
 
     ![A screenshot of a computer AI-generated content may be incorrect.](./media/image30.png)
 
@@ -345,12 +354,11 @@ target for the database migration.
 
     1.  **Subscription:** @lab.CloudSubscription.Name
 
-    2.  **Resource group:** **ResourceGroup1**
+    2.  **Resource group:** @lab.CloudResourceGroup(ResourceGroup1).Name
 
-    3.  **Server name:** +++**zavaweb-db@lab.LabInstance.Id**+++
+    3.  **Server name:** +++zavaweb-db@lab.LabInstance.Id+++
 
-    4.  **Region:** 
-        @lab.CloudResourceGroup(ResourceGroup1).Location 
+    4.  **Region:** @lab.CloudResourceGroup(ResourceGroup1).Location 
 
     5.  **PostgreSQL version:** Keep the default, as it always selects
         the latest version
@@ -365,7 +373,7 @@ target for the database migration.
     choose the following:
 
     1.  **Compute tier:** General Purpose (2-64 vCores) - Balanced
-        configuration for most common workloads\*\*
+        configuration for most common workloads
 
     2.  **Compute Size:** Standard_D4ds_v5 (4 vCores, 16GiB memory, 6400
         max iops)
@@ -390,8 +398,6 @@ target for the database migration.
 
     Select **Next: Networking**
 
-    ![](./media/image34.png)
-
 9.  In the **Networking** tab, under **Public access**, clear the
     checkbox to disable public access.
 
@@ -405,21 +411,19 @@ target for the database migration.
 11. On the **Create private endpoint** window, enter the following
     details:
 
-    1.  **Subscription:** Keep default
+    1.  **Subscription:** @lab.CloudSubscription.Name
 
-    2.  **Resource group:** ResourceGroup1
+    2.  **Resource group:** @lab.CloudResourceGroup(ResourceGroup1).Name
 
-    3.  **Location**: Select
-        @lab.CloudResourceGroup(ResourceGroup1).Location 
+    3.  **Location**: @lab.CloudResourceGroup(ResourceGroup1).Location 
 
-    4.  **Name:** Enter +++post-priv-endpoint+++
+    4.  **Name:** +++post-priv-endpoint+++
 
-    5.  **Virtual network:** Select
-        +++ZavaWeb@lab.LabInstance.Id-spoke-vnet(ResourceGroup1)+++
+    5.  **Virtual network:** +++ZavaWeb@lab.LabInstance.Id-spoke-vnet (ResourceGroup1)+++
 
     6.  **Subnet**: Select **default**(10.2.0.0/24)
 
-    7.  **Integrate with privet DNS zone:** Select No (You will use an
+    7.  **Integrate with privet DNS zone:** Select **No** (You will use an
         IP address rather than a DNS entry when connecting.)
 
     8.  Click **OK**
@@ -502,10 +506,10 @@ for PostgreSQL - flexible server.
 
     2.  **Port:** 5432
 
-    3.  **Server admin login name:** +++rootuser+++(the VM has been setup with
+    3.  **Server admin login name:** +++rootuser+++ (the VM has been setup with
         an admin user called rootuser)
 
-    4.  **Password:** Enter+++123rootpass456+++
+    4.  **Password:** +++123rootpass456+++
 
     5.  **SSL mode:** Prefer.
 
@@ -519,12 +523,12 @@ for PostgreSQL - flexible server.
 6.  The connectivity details should be automatically completed for the
     target server we are migrating to.
 
-    1.  In the password field -  Enter +++passaDmin342+++
+    1.  In the password field - +++passaDmin342+++
 
     2.  Click on the **Connect to target** option to validate the
         connectivity details provided.
 
-    3.  Click on the **Next: Databases to validate or migrate\>** button to progress.
+    3.  Click on the **Next: Databases to validate or migrate \>** button to progress.
 
     ![](./media/image49.png)
 
@@ -595,9 +599,9 @@ for PostgreSQL - flexible server.
 
     - **Authentication Type:** VM Password
 
-    - **Username:** Enter +++demouser+++
+    - **Username:** +++demouser+++
 
-    - **VM Password:** Enter +++pass@dmIn234+++
+    - **VM Password:** +++pass@dmIn234+++
 
     Click **Connect**.
 
@@ -741,9 +745,9 @@ using Ora2Pg.
 
     **Resource group:** Select **ResourceGroup1**
 
-    **Server name:** Enter +++postgrenewserver+++
+    **Server name:** Enter +++postgrenewserver@lab.LabInstance.Id+++
 
-    **Region:** Select **Central US**
+    **Region:** @lab.CloudResourceGroup(ResourceGroup1).Location
 
     **PostgreSQL Version:** 16
 
@@ -755,60 +759,52 @@ using Ora2Pg.
     - Username: +++pgAdmin+++
 
     - Password: +++pAssw0rd1289+++
+	
+	![](./media/image34.png)
 
     Select **Networking**
+	
 
 6.  In the networking tab, please ensure that the connectivity method is
     set to Public access and "Allow public access to this resource
     through the internet using a public IP address" is enabled.
 
-    ![](./media/image67.png)
+    
 
 7.  Under the Firewall section, enable **Allow public access from any
     Azure service within Azure to this server** and click **+Add current
     client IP address**. Then it will add a firewall rule for your
     current IP. Click **Review + Create**.
 
-    ![](./media/image68.png)
-
 8.  Click **Create**.
-
-    ![](./media/image69.png)
 
 9.  Wait for 10-15 mins to complete the deployment.
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image70.png)
-
 10. Click **Go to resource**.
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image71.png)
+    ![](./media/image77.png)
 
-11. On the left-hand navigation menu, click on **Settings-\>Server
+13. On the left-hand navigation menu, click on **Settings-\>Server
     parameters**.
 
-    ![](./media/image72.png)
+    
 
 12. In the search bar, enter +++azure.extension+++.
 
-    ![](./media/image73.png)
+	![](./media/image73.png)
 
 13. From the drop-down menu, select **BTREE_GIN** and **PG_TRGM**
     extensions.
-
+	
+	
     ![](./media/image74.png)
 
     ![](./media/image75.png)
 
 14. Click **Save**.
 
-    ![](./media/image76.png)
-
 15. After completing the deployment successfully. Click on the **Home**
     tab.
-
-    ![](./media/image77.png)
 
 ## Task 2: Create a virtual machine
 
@@ -824,8 +820,6 @@ exercise.
 
 2.  Click **+Create**.
 
-    ![](./media/image79.png)
-
 3.  Select **Virtual Machine**.
 
     ![](./media/image80.png)
@@ -834,11 +828,11 @@ exercise.
 
     - **Subscription:** @lab.CloudSubscription.Name
 
-    - **Resource group:** ResourceGroup1.
+    - **Resource group:** @lab.CloudResourceGroup(ResourceGroup1).Name
 
-    - **Virtual machine name:** +++oracleVirtual+++
+    - **Virtual machine name:** +++oracleVirtual@lab.LabInstance.Id+++
 
-    - **Region:** Central US
+    - **Region:** @lab.CloudResourceGroup(ResourceGroup1).Location
 
     - **Image:** +++Oracle Linux 8.10 (LVM)-x64 Gen2+++
 
@@ -859,6 +853,8 @@ exercise.
     ![](./media/image84.png)
 
 7.  Your deployment has started. Wait for 5-10 mins to complete.
+
+	![](./media/image79.png)
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image85.png)
