@@ -1,3 +1,13 @@
+!INSTRUCTIONS [ ](https://raw.githubusercontent.com/LODSContent/All-MOC/master/MOC/@lab.LanguageCode/tap_alert.md)
+
+!instructions[](https://raw.githubusercontent.com/LODSContent/All-MOC/refs/heads/master/MOC/@lab.LanguageCode/MSDepth-CS-Login.md)
+
+===
+
+!instructions[](https://raw.githubusercontent.com/LODSContent/All-MOC/refs/heads/master/MOC/en/MultiLineCodeHint.md) 
+
+<!-- !instructions[](./Day2.md) -->
+
 
 # Lab 02 - End-to-End Migration of ZAVA's On-Prem PostgreSQL to Azure Database for PostgreSQL - Flexible Server (Homogeneous Migration)
 
@@ -335,8 +345,7 @@ target for the database migration.
 
     ![A screenshot of a computer AI-generated content may be incorrect.](./media/image29.png)
 
-3.  Click **Create** and then select +++Azure Database for PostgreSQL
-    Flexible Server+++.
+3.  Click **Create** and then select +++Azure Database for PostgreSQL Flexible Server+++.
 
     ![A screenshot of a computer AI-generated content may be incorrect.](./media/image30.png)
 
@@ -389,8 +398,6 @@ target for the database migration.
 
     Select **Next: Networking**
 
-    ![](./media/image34.png)
-
 9.  In the **Networking** tab, under **Public access**, clear the
     checkbox to disable public access.
 
@@ -412,7 +419,7 @@ target for the database migration.
 
     4.  **Name:** +++post-priv-endpoint+++
 
-    5.  **Virtual network:** +++ZavaWeb@lab.LabInstance.Id-spoke-vnet(ResourceGroup1)+++
+    5.  **Virtual network:** +++ZavaWeb@lab.LabInstance.Id-spoke-vnet (ResourceGroup1)+++
 
     6.  **Subnet**: Select **default**(10.2.0.0/24)
 
@@ -733,9 +740,6 @@ using Ora2Pg.
     ![](./media/image66.png)
 
 3.  Click **+Create**.
-	
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image70.png)
 
 4.  Now enter the following details:
 
@@ -749,35 +753,28 @@ using Ora2Pg.
 
     **Workload type:** Select **Dev/Test**
 
-    ![A screenshot of a computer AI-generated content may be
-    incorrect.](./media/image71.png)
-
 5.  Under Authentication, select **PostgreSQL authentication only** and
     then enter the following credential values:
 
     - Username: +++pgAdmin+++
 
     - Password: +++pAssw0rd1289+++
+	
+	![](./media/image34.png)
 
     Select **Networking**
-
-    ![](./media/image72.png)
+	
 
 6.  In the networking tab, please ensure that the connectivity method is
     set to Public access and "Allow public access to this resource
     through the internet using a public IP address" is enabled.
 
-    ![](./media/image73.png)
+    
 
 7.  Under the Firewall section, enable **Allow public access from any
     Azure service within Azure to this server** and click **+Add current
     client IP address**. Then it will add a firewall rule for your
     current IP. Click **Review + Create**.
-
-
-    ![](./media/image74.png)
-
-    ![](./media/image75.png)
 
 8.  Click **Create**.
 
@@ -790,10 +787,19 @@ using Ora2Pg.
 13. On the left-hand navigation menu, click on **Settings-\>Server
     parameters**.
 
+    
+
 12. In the search bar, enter +++azure.extension+++.
+
+	![](./media/image73.png)
 
 13. From the drop-down menu, select **BTREE_GIN** and **PG_TRGM**
     extensions.
+	
+	
+    ![](./media/image74.png)
+
+    ![](./media/image75.png)
 
 14. Click **Save**.
 
@@ -813,8 +819,6 @@ exercise.
     ![](./media/image78.png)
 
 2.  Click **+Create**.
-
-    ![](./media/image79.png)
 
 3.  Select **Virtual Machine**.
 
@@ -849,6 +853,8 @@ exercise.
     ![](./media/image84.png)
 
 7.  Your deployment has started. Wait for 5-10 mins to complete.
+
+	![](./media/image79.png)
 
     ![A screenshot of a computer AI-generated content may be
     incorrect.](./media/image85.png)
