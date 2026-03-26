@@ -1,14 +1,3 @@
-!INSTRUCTIONS [ ](https://raw.githubusercontent.com/LODSContent/All-MOC/master/MOC/@lab.LanguageCode/tap_alert.md)
-
-!instructions[](https://raw.githubusercontent.com/LODSContent/All-MOC/refs/heads/master/MOC/@lab.LanguageCode/MSDepth-CS-Login.md)
-
-===
-
-!instructions[](https://raw.githubusercontent.com/LODSContent/All-MOC/refs/heads/master/MOC/en/MultiLineCodeHint.md) 
-
-<!-- !instructions[](./Day2.md) -->
-
-
 # Lab 02 - End-to-End Migration of ZAVA's On-Prem PostgreSQL to Azure Database for PostgreSQL - Flexible Server (Homogeneous Migration)
 
 ## Scenario
